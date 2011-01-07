@@ -34,8 +34,8 @@
 @synthesize _intAutocapitalizationType;
 
 
-- (TextViewFormItem *)initWithKey:(NSString *)strKey Label:(NSString *)strLabel Value:(NSString *)strValue {
-	if (self = (TextViewFormItem *)[super initWithKey:strKey Label:strLabel]) {
+- (QSTextViewFormItem *)initWithKey:(NSString *)strKey Label:(NSString *)strLabel Value:(NSString *)strValue {
+	if (self = (QSTextViewFormItem *)[super initWithKey:strKey Label:strLabel]) {
 		_strValue = strValue;
 		_blnPasswordFlag = false;
 		_intAutocorrectionType = UITextAutocorrectionTypeDefault;

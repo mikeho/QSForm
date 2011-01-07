@@ -24,15 +24,16 @@
  */
 
 #import "QSForm.h"
+#import "QSControls.h"
 
-@implementation FormViewController : UITableViewController
+@implementation QSFormViewController : UITableViewController
 
 @synthesize _objNavigatedViewController;
 @synthesize _strHeaderText;
 @synthesize _objSelectedIndexPath;
 @synthesize _blnSetAllLabelsShortFlag;
 
-- (FormViewController *)initAtTop:(NSInteger)intTop NavigatedViewController:(UIViewController *)objNavigatedViewController {
+- (QSFormViewController *)initAtTop:(NSInteger)intTop NavigatedViewController:(UIViewController *)objNavigatedViewController {
 	if (self = [super initWithStyle:UITableViewStyleGrouped]) {
 		[[self view] setFrame:CGRectMake(0, intTop, [UIScreen mainScreen].bounds.size.width, 5000)];
 		[[self tableView] setScrollEnabled:false];
@@ -100,7 +101,7 @@
 							  animated:true];
 }
 
-- (FormItem *)addFormItem:(FormItem *)objItem {
+- (QSFormItem *)addFormItem:(QSFormItem *)objItem {
 	[objItem Index:([_objFormItemArray count] + 1000)];
 	[objItem Form:self];
 	[_objFormItemArray addObject:objItem];
@@ -111,15 +112,15 @@
 	return objItem;
 }
 
-- (FormItem *)getFormItemWithKey:(NSString *)strKey {
-	for (FormItem * objItem in _objFormItemArray) {
+- (QSFormItem *)getFormItemWithKey:(NSString *)strKey {
+	for (QSFormItem * objItem in _objFormItemArray) {
 		if ([[objItem Key] isEqualToString:strKey])
 			return objItem;
 	}
 	return nil;
 }
 
-- (FormItem *)getFormItemAtIndex:(NSInteger)intIndex {
+- (QSFormItem *)getFormItemAtIndex:(NSInteger)intIndex {
 	return [_objFormItemArray objectAtIndex:intIndex];
 }
 
@@ -235,12 +236,12 @@
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-	[(FormItem *)[_objFormItemArray objectAtIndex:[indexPath row]] IndexPath:indexPath];
-	return [(FormItem *)[_objFormItemArray objectAtIndex:[indexPath row]] getUITableViewCellForUITableView:tableView];
+	[(QSFormItem *)[_objFormItemArray objectAtIndex:[indexPath row]] IndexPath:indexPath];
+	return [(QSFormItem *)[_objFormItemArray objectAtIndex:[indexPath row]] getUITableViewCellForUITableView:tableView];
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-	return [(FormItem *)[_objFormItemArray objectAtIndex:[indexPath row]] getHeight];
+	return [(QSFormItem *)[_objFormItemArray objectAtIndex:[indexPath row]] getHeight];
 }
 
 - (NSIndexPath *)tableView:(UITableView *)tableView willSelectRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -259,14 +260,14 @@
 			_blnSuspendScrollRestoreFlag = false;
 		}
 
-		[(FormItem *)[_objFormItemArray objectAtIndex:[_objSelectedIndexPath row]] tableViewCellUnselect:[tableView cellForRowAtIndexPath:_objSelectedIndexPath]];
+		[(QSFormItem *)[_objFormItemArray objectAtIndex:[_objSelectedIndexPath row]] tableViewCellUnselect:[tableView cellForRowAtIndexPath:_objSelectedIndexPath]];
 		[self SelectedIndexPath:nil];
 	} else {
 		_blnSuspendScrollRestoreFlag = false;
 	}
 
 	// Alert the FormItem that it has been tapped -- find out whether or not it is telling us to "Select" it
-	bool blnSelectFlag = [(FormItem *)[_objFormItemArray objectAtIndex:[indexPath row]] tableViewCellTapped:[tableView cellForRowAtIndexPath:indexPath]];
+	bool blnSelectFlag = [(QSFormItem *)[_objFormItemArray objectAtIndex:[indexPath row]] tableViewCellTapped:[tableView cellForRowAtIndexPath:indexPath]];
 
 	if (blnSelectFlag) {
 		[self SelectedIndexPath:indexPath];
@@ -278,14 +279,14 @@
 - (void)unselectTableCells {
 	// If there is an already-selected row, let's tell the FormItem at that row to "unselect"
 	if (_objSelectedIndexPath) {
-		[(FormItem *)[_objFormItemArray objectAtIndex:[_objSelectedIndexPath row]] tableViewCellUnselect:[[self tableView] cellForRowAtIndexPath:_objSelectedIndexPath]];
+		[(QSFormItem *)[_objFormItemArray objectAtIndex:[_objSelectedIndexPath row]] tableViewCellUnselect:[[self tableView] cellForRowAtIndexPath:_objSelectedIndexPath]];
 		[self SelectedIndexPath:nil];
 	}
 }
 
 - (CGFloat)getHeight {
 	CGFloat fltHeight = 1;
-	for (FormItem * objFormItem in _objFormItemArray)
+	for (QSFormItem * objFormItem in _objFormItemArray)
 		fltHeight += [objFormItem getHeight] + 1;
 	return fltHeight;
 }

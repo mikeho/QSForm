@@ -25,13 +25,14 @@
 
 #import <UIKit/UITableView.h>
 #import "QSForm.h"
+#import "QSControls.h"
 
 @implementation QSSectionHeaderFormItem
 
 @synthesize _strText;
 
-- (SectionHeaderFormItem *)initWithKey:(NSString *)strKey Text:(NSString *)strText {
-	if (self = (SectionHeaderFormItem *)[super initWithKey:strKey Label:nil]) {
+- (QSSectionHeaderFormItem *)initWithKey:(NSString *)strKey Text:(NSString *)strText {
+	if (self = (QSSectionHeaderFormItem *)[super initWithKey:strKey Label:nil]) {
 		_strText = strText;
 		[_strText retain];
 	}

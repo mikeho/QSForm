@@ -26,6 +26,7 @@
 #import <UIKit/UITableView.h>
 #import "QSForm.h"
 #import "QSControls.h"
+#import "QSUtilities.h"
 
 @implementation QSListFormItem
 
@@ -36,8 +37,8 @@
 #pragma mark -
 #pragma mark Initializers
 
-- (ListFormItem *)initWithKey:(NSString *)strKey Label:(NSString *)strLabel SingleValue:(NSString *)strSingleValue {
-	if (self = (ListFormItem *)[super initWithKey:strKey Label:strLabel]) {
+- (QSListFormItem *)initWithKey:(NSString *)strKey Label:(NSString *)strLabel SingleValue:(NSString *)strSingleValue {
+	if (self = (QSListFormItem *)[super initWithKey:strKey Label:strLabel]) {
 		_strSingleValue = strSingleValue;
 		[_strSingleValue retain];
 		_strNameArray = [[NSMutableArray alloc] init];
@@ -49,8 +50,8 @@
 	return self;
 }
 
-- (ListFormItem *)initWithKey:(NSString *)strKey Label:(NSString *)strLabel MultipleValue:(NSArray *)strMultipleValueArray {
-	if (self = (ListFormItem *)[super initWithKey:strKey Label:strLabel]) {
+- (QSListFormItem *)initWithKey:(NSString *)strKey Label:(NSString *)strLabel MultipleValue:(NSArray *)strMultipleValueArray {
+	if (self = (QSListFormItem *)[super initWithKey:strKey Label:strLabel]) {
 		_strMultipleValueArray = [[NSMutableArray alloc] initWithArray:strMultipleValueArray];
 
 		_strNameArray = [[NSMutableArray alloc] init];
@@ -122,7 +123,7 @@
 			
 			[strSelectedValueArray addObject:strSelectedValue];
 		}
-		[_lblField setText:[Strings implodeArray:strSelectedValueArray WithGlue:@"\n"]];
+		[_lblField setText:[QSStrings implodeArray:strSelectedValueArray WithGlue:@"\n"]];
 		[strSelectedValueArray release];
 	} else {
 		[_lblField setText:_strSingleValue];
@@ -147,7 +148,7 @@
 		[_lblField setFont:[UIFont systemFontOfSize:[UIFont labelFontSize]]];
 	}
 	
-	[Labels trimFrameHeightForLabel:_lblField WithMinHeight:25];
+	[QSLabels trimFrameHeightForLabel:_lblField WithMinHeight:25];
 	return fmax([super getHeight], kLabelTopMargin + _lblField.bounds.size.height + kLabelBottomMargin);
 }
 
@@ -209,7 +210,7 @@
 		// Update the "Other" Value (if applicable)
 		if ([_strMultipleValueArray count]) {
 			[_strOtherValue release];
-			_strOtherValue = [Strings implodeArray:_strMultipleValueArray WithGlue:@", "];
+			_strOtherValue = [QSStrings implodeArray:_strMultipleValueArray WithGlue:@", "];
 			[_strOtherValue retain];
 		} else {
 			[_strOtherValue release];

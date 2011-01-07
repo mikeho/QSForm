@@ -32,5 +32,5 @@
 
 @property (nonatomic, retain, getter=Text, setter=Text) NSString * _strText;
 
-- (DisplayTextFormItem *)initWithKey:(NSString *)strKey Text:(NSString *)strText;
+- (QSDisplayTextFormItem *)initWithKey:(NSString *)strKey Text:(NSString *)strText;
 @end

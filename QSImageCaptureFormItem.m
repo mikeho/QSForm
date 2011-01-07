@@ -30,8 +30,8 @@
 
 @synthesize _objImage;
 
-- (ImageCaptureFormItem *)initWithKey:(NSString *)strKey Label:(NSString *)strLabel Image:(UIImage *)objImage {
-	if (self = (ImageCaptureFormItem *)[super initWithKey:strKey Label:strLabel]) {
+- (QSImageCaptureFormItem *)initWithKey:(NSString *)strKey Label:(NSString *)strLabel Image:(UIImage *)objImage {
+	if (self = (QSImageCaptureFormItem *)[super initWithKey:strKey Label:strLabel]) {
 		_objImage = objImage;
 		[_objImage retain];
 	}

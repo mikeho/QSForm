@@ -38,5 +38,5 @@
 @property (nonatomic, assign, getter=TimeFlag, setter=TimeFlag) bool _blnTimeFlag;
 @property (nonatomic, retain, getter=DateTimeFormat, setter=DateTimeFormat) NSString * _strDateTimeFormat;
 
-- (DateTimeFormItem *)initWithKey:(NSString *)strKey Label:(NSString *)strLabel Value:(NSDate *)dttValue;
+- (QSDateTimeFormItem *)initWithKey:(NSString *)strKey Label:(NSString *)strLabel Value:(NSDate *)dttValue;
 @end

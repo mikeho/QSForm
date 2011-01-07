@@ -50,8 +50,8 @@
 @property (nonatomic, assign, getter=DisplayMultiLineFlag, setter=DisplayMultiLineFlag) bool _blnDisplayMultiLineFlag;
 
 
-- (ListFormItem *)initWithKey:(NSString *)strKey Label:(NSString *)strLabel SingleValue:(NSString *)strSingleValue;
-- (ListFormItem *)initWithKey:(NSString *)strKey Label:(NSString *)strLabel MultipleValue:(NSArray *)strMultipleValueArray;
+- (QSListFormItem *)initWithKey:(NSString *)strKey Label:(NSString *)strLabel SingleValue:(NSString *)strSingleValue;
+- (QSListFormItem *)initWithKey:(NSString *)strKey Label:(NSString *)strLabel MultipleValue:(NSArray *)strMultipleValueArray;
 
 - (void)addItemWithName:(NSString *)strName;
 - (void)addItemWithName:(NSString *)strName Value:(NSString *)strValue;

@@ -34,8 +34,8 @@
 @synthesize _intAutocapitalizationType;
 
 
-- (TextFieldFormItem *)initWithKey:(NSString *)strKey Label:(NSString *)strLabel Value:(NSString *)strValue {
-	if (self = (TextFieldFormItem *)[super initWithKey:strKey Label:strLabel]) {
+- (QSTextFieldFormItem *)initWithKey:(NSString *)strKey Label:(NSString *)strLabel Value:(NSString *)strValue {
+	if (self = (QSTextFieldFormItem *)[super initWithKey:strKey Label:strLabel]) {
 		_strValue = strValue;
 		[_strValue retain];
 		_blnPasswordFlag = false;

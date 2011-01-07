@@ -37,6 +37,6 @@
 
 @property (nonatomic, retain, getter=Image, setter=Image) UIImage * _objImage;
 
-- (ImageCaptureFormItem *)initWithKey:(NSString *)strKey Label:(NSString *)strLabel Image:(UIImage *)objImage;
+- (QSImageCaptureFormItem *)initWithKey:(NSString *)strKey Label:(NSString *)strLabel Image:(UIImage *)objImage;
 - (void)eraseClick:(id)sender;
 @end

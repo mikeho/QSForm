@@ -24,7 +24,7 @@
  */
 
 #import <Foundation/Foundation.h>
-@class QSFormViewController
+@class QSFormViewController;
 
 @interface QSFormItem : NSObject {
 	NSInteger _intIndex;

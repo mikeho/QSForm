@@ -41,7 +41,7 @@
 - (IBAction)chkFieldTap:(id)sender;
 - (IBAction)unansweredClick:(id)sender;
 
-- (SwitchFormItem *)initWithKey:(NSString *)strKey Label:(NSString *)strLabel Value:(bool)blnValue;
-- (SwitchFormItem *)initWithKey:(NSString *)strKey Label:(NSString *)strLabel WithNullValue:(id)objNull;
+- (QSSwitchFormItem *)initWithKey:(NSString *)strKey Label:(NSString *)strLabel Value:(bool)blnValue;
+- (QSSwitchFormItem *)initWithKey:(NSString *)strKey Label:(NSString *)strLabel WithNullValue:(id)objNull;
 
 @end

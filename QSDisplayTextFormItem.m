@@ -25,13 +25,14 @@
 
 #import <UIKit/UITableView.h>
 #import "QSForm.h"
+#import "QSControls.h"
 
 @implementation QSDisplayTextFormItem
 
 @synthesize _strText;
 
-- (DisplayTextFormItem *)initWithKey:(NSString *)strKey Text:(NSString *)strText {
-	if (self = (DisplayTextFormItem *)[super initWithKey:strKey Label:nil]) {
+- (QSDisplayTextFormItem *)initWithKey:(NSString *)strKey Text:(NSString *)strText {
+	if (self = (QSDisplayTextFormItem *)[super initWithKey:strKey Label:nil]) {
 		[self Text:strText];
 	}
 	return self;

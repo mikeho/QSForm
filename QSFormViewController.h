@@ -24,9 +24,9 @@
  */
 
 #import <UIKit/UIKit.h>
-@class FormItem;
+@class QSFormItem;
 
-@interface FormViewController : UITableViewController {
+@interface QSFormViewController : UITableViewController {
 	NSMutableArray * _objFormItemArray;
 	UIViewController * _objNavigatedViewController;
 	NSString * _strHeaderText;
@@ -45,10 +45,10 @@
 @property (nonatomic, retain, getter=SelectedIndexPath, setter=SelectedIndexPath) NSIndexPath * _objSelectedIndexPath;
 @property (nonatomic, assign, getter=SetAllLabelsShortFlag, setter=SetAllLabelsShortFlag) bool _blnSetAllLabelsShortFlag;
 
-- (FormViewController *)initAtTop:(NSInteger)intTop NavigatedViewController:(UIViewController *)objNavigatedViewController;
-- (FormItem *)addFormItem:(FormItem *)objItem;
-- (FormItem *)getFormItemWithKey:(NSString *)strKey;
-- (FormItem *)getFormItemAtIndex:(NSInteger)intIndex;
+- (QSFormViewController *)initAtTop:(NSInteger)intTop NavigatedViewController:(UIViewController *)objNavigatedViewController;
+- (QSFormItem *)addFormItem:(QSFormItem *)objItem;
+- (QSFormItem *)getFormItemWithKey:(NSString *)strKey;
+- (QSFormItem *)getFormItemAtIndex:(NSInteger)intIndex;
 - (void)removeAllFormItems;
 - (void)redraw;
 

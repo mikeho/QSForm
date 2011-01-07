@@ -33,8 +33,8 @@
 @synthesize _strDateTimeFormat;
 
 
-- (DateTimeFormItem *)initWithKey:(NSString *)strKey Label:(NSString *)strLabel Value:(NSDate *)dttValue {
-	if (self = (DateTimeFormItem *)[super initWithKey:strKey Label:strLabel]) {
+- (QSDateTimeFormItem *)initWithKey:(NSString *)strKey Label:(NSString *)strLabel Value:(NSDate *)dttValue {
+	if (self = (QSDateTimeFormItem *)[super initWithKey:strKey Label:strLabel]) {
 		_dttValue = dttValue;
 		[_dttValue retain];
 		

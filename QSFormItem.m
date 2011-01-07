@@ -38,7 +38,7 @@
 @synthesize _blnChangedFlag;
 @synthesize _blnHiddenFlag;
 
-- (FormItem *)initWithKey:(NSString *)strKey Label:(NSString *)strLabel {
+- (QSFormItem *)initWithKey:(NSString *)strKey Label:(NSString *)strLabel {
 	if (self = [super init]) {
 		_strKey = [strKey retain];
 		_strLabel = [strLabel retain];

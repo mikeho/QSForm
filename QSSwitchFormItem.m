@@ -33,16 +33,16 @@
 @synthesize _strOverrideOnLabel;
 @synthesize _strOverrideOffLabel;
 
-- (SwitchFormItem *)initWithKey:(NSString *)strKey Label:(NSString *)strLabel Value:(bool)blnValue {
-	if (self = (SwitchFormItem *)[super initWithKey:strKey Label:strLabel]) {
+- (QSSwitchFormItem *)initWithKey:(NSString *)strKey Label:(NSString *)strLabel Value:(bool)blnValue {
+	if (self = (QSSwitchFormItem *)[super initWithKey:strKey Label:strLabel]) {
 		_blnValue = blnValue;
 		_blnValueExists = true;
 	}
 	return self;
 }
 
-- (SwitchFormItem *)initWithKey:(NSString *)strKey Label:(NSString *)strLabel WithNullValue:(id)objNull {
-	if (self = (SwitchFormItem *)[super initWithKey:strKey Label:strLabel]) {
+- (QSSwitchFormItem *)initWithKey:(NSString *)strKey Label:(NSString *)strLabel WithNullValue:(id)objNull {
+	if (self = (QSSwitchFormItem *)[super initWithKey:strKey Label:strLabel]) {
 		_blnValue = false;
 		_blnValueExists = false;
 	}

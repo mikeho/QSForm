@@ -32,5 +32,5 @@
 
 @property (nonatomic, retain, getter=Text, setter=Text) NSString * _strText;
 
-- (SectionHeaderFormItem *)initWithKey:(NSString *)strKey Text:(NSString *)strText;
+- (QSSectionHeaderFormItem *)initWithKey:(NSString *)strKey Text:(NSString *)strText;
 @end

@@ -38,7 +38,7 @@
 @property (nonatomic, assign, getter=AutocorrectionType, setter=AutocorrectionType) UITextAutocorrectionType _intAutocorrectionType;
 @property (nonatomic, assign, getter=AutocapitalizationType, setter=AutocapitalizationType) UITextAutocapitalizationType _intAutocapitalizationType;
 
-- (TextViewFormItem *)initWithKey:(NSString *)strKey Label:(NSString *)strLabel Value:(NSString *)strValue;
+- (QSTextViewFormItem *)initWithKey:(NSString *)strKey Label:(NSString *)strLabel Value:(NSString *)strValue;
 - (IBAction)textFieldDone:(id)sender;
 - (IBAction)textFieldStart:(id)sender;
 @end
