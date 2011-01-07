@@ -2,6 +2,7 @@
  * QSFormItem.h
  * 
  * Copyright (c) 2010 - 2011, Quasidea Development, LLC
+ * For more information, please go to http://www.quasidea.com/
  * 
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,14 +24,7 @@
  */
 
 #import <Foundation/Foundation.h>
-#import "QSFormViewController.h"
-#define kDefaultLabelTag 111;
-#define kShortLabelWidth 75
-#define kLabelWidth 150
-#define kLabelGutterMargin 10
-#define kLabelTopMargin 10
-#define kLabelBottomMargin 5
-#define kLabelSideMargin 10
+@class QSFormViewController
 
 @interface QSFormItem : NSObject {
 	NSInteger _intIndex;

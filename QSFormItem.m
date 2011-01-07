@@ -2,6 +2,7 @@
  * QSFormItem.m
  * 
  * Copyright (c) 2010 - 2011, Quasidea Development, LLC
+ * For more information, please go to http://www.quasidea.com/
  * 
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -22,10 +23,10 @@
  * THE SOFTWARE.
  */
 
-#import "QSFormItem.h"
+#import "QSForm.h"
 #import "QSControls.h"
 
-@implementation FormItem
+@implementation QSFormItem
 
 @synthesize _intIndex;
 @synthesize _objIndexPath;
@@ -70,7 +71,7 @@
 			lblLabel.font = [UIFont boldSystemFontOfSize:11];
 			lblLabel.text = _strLabel;
 			[objCell.contentView addSubview:lblLabel];
-			[Labels trimFrameHeightForLabel:lblLabel WithMinHeight:25];
+			[QSLabels trimFrameHeightForLabel:lblLabel WithMinHeight:25];
 			[lblLabel release];
 		}
 	} else {
@@ -78,7 +79,7 @@
 		UILabel * lblLabel = (UILabel *)[objCell.contentView viewWithTag:111];
 		if (lblLabel) {
 			lblLabel.text = _strLabel;
-			[Labels trimFrameHeightForLabel:lblLabel WithMinHeight:25];
+			[QSLabels trimFrameHeightForLabel:lblLabel WithMinHeight:25];
 		}
 	}
 
@@ -97,7 +98,7 @@
 	lblLabel.textColor = [UIColor colorWithRed:0.4 green:0.4 blue:0.6 alpha:1.0];
 	lblLabel.font = [UIFont boldSystemFontOfSize:11];
 	lblLabel.text = _strLabel;
-	[Labels trimFrameHeightForLabel:lblLabel WithMinHeight:25];
+	[QSLabels trimFrameHeightForLabel:lblLabel WithMinHeight:25];
 
 	CGFloat fltToReturn = fmax(40, kLabelTopMargin + kLabelBottomMargin + lblLabel.bounds.size.height);
 	[lblLabel release];
