@@ -69,7 +69,7 @@
 #pragma mark Memory Management
 
 - (void)dealloc {
-	[self SingleValue:nil];
+	[self setSingleValue:nil];
 	[_strNameArray release];
 	[_strValueArray release];
 	[_blnSelectedArray release];
@@ -155,7 +155,7 @@
 - (bool)tableViewCellTapped:(UITableViewCell *)objCell {
 	_objTableViewController = [[UITableViewController alloc] initWithStyle:UITableViewStyleGrouped];
 	[[_objTableViewController navigationItem] setTitle:_strLabel];
-	[[_objTableViewController navigationItem] setPrompt:[[[_objForm NavigatedViewController] navigationItem] prompt]];
+	[[_objTableViewController navigationItem] setPrompt:[[[_objForm navigatedViewController] navigationItem] prompt]];
 	[[_objTableViewController tableView] setDelegate:self];
 	[[_objTableViewController tableView] setDataSource:self];
 	
@@ -170,7 +170,7 @@
 		[[_objTableViewController navigationItem] setPrompt:_strSubscreenPrompt];
 	}
 		
-	[[[_objForm NavigatedViewController] navigationController] pushViewController:_objTableViewController
+	[[[_objForm navigatedViewController] navigationController] pushViewController:_objTableViewController
 																		 animated:true];
 
 	return false;
@@ -360,9 +360,9 @@
 			}
 		} else {
 			if ([_strSingleValue isEqualToString:(NSString *)[_strValueArray objectAtIndex:[indexPath row]]]) {
-				[self SingleValue:nil];
+				[self setSingleValue:nil];
 			} else {
-				[self SingleValue:[_strValueArray objectAtIndex:[indexPath row]]];
+				[self setSingleValue:[_strValueArray objectAtIndex:[indexPath row]]];
 			}
 		}
 		[tableView reloadData];
@@ -400,9 +400,9 @@
 			}
 		} else {
 			if ([[txtValue text] length] > 0) {
-				[self SingleValue:[txtValue text]];
+				[self setSingleValue:[txtValue text]];
 			} else {
-				[self SingleValue:nil];
+				[self setSingleValue:nil];
 			}
 		}
 		

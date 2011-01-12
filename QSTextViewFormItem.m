@@ -92,7 +92,7 @@
 }
 
 - (IBAction)textFieldStart:(id)sender {
-	[_objForm SelectedIndexPath:_objIndexPath];
+	[_objForm setSelectedIndexPath:_objIndexPath];
 }
 
 - (IBAction)textFieldDone:(id)sender {

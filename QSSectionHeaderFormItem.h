@@ -30,7 +30,7 @@
 	NSString * _strText;
 }
 
-@property (nonatomic, retain, getter=Text, setter=Text) NSString * _strText;
+@property (nonatomic, retain, getter=text, setter=setText) NSString * _strText;
 
 - (QSSectionHeaderFormItem *)initWithKey:(NSString *)strKey Text:(NSString *)strText;
 @end

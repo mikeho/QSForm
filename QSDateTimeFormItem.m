@@ -100,7 +100,7 @@
 
 - (void)actionSheet:(UIActionSheet *)actionSheet willDismissWithButtonIndex:(NSInteger)buttonIndex {
 	if (buttonIndex == 0) {
-		[self Value:[_objPicker date]];
+		[self setValue:[_objPicker date]];
 		[_objForm redraw];
 	}
 	
@@ -109,8 +109,8 @@
 }
 
 - (void)dealloc {
-	[self Value:nil];
-	[self DateTimeFormat:nil];
+	[self setValue:nil];
+	[self setDateTimeFormat:nil];
 	[_objPicker release];
 	_objPicker = nil;
 	[super dealloc];

@@ -31,7 +31,7 @@
 @synthesize _objNavigatedViewController;
 @synthesize _strHeaderText;
 @synthesize _objSelectedIndexPath;
-@synthesize _blnSetAllLabelsShortFlag;
+@synthesize _blnMakeAllLabelsShortFlag;
 
 - (QSFormViewController *)initAtTop:(NSInteger)intTop NavigatedViewController:(UIViewController *)objNavigatedViewController {
 	if (self = [super initWithStyle:UITableViewStyleGrouped]) {
@@ -39,7 +39,7 @@
 		[[self tableView] setScrollEnabled:false];
 
 		_objFormItemArray = [[NSMutableArray alloc] init];
-		_blnSetAllLabelsShortFlag = false;
+		_blnMakeAllLabelsShortFlag = false;
 
 		_objNavigatedViewController = objNavigatedViewController;
 		[_objNavigatedViewController retain];
@@ -102,19 +102,19 @@
 }
 
 - (QSFormItem *)addFormItem:(QSFormItem *)objItem {
-	[objItem Index:([_objFormItemArray count] + 1000)];
-	[objItem Form:self];
+	[objItem setIndex:([_objFormItemArray count] + 1000)];
+	[objItem setForm:self];
 	[_objFormItemArray addObject:objItem];
 
-	if (_blnSetAllLabelsShortFlag)
-		[objItem ShortLabelFlag:true];
+	if (_blnMakeAllLabelsShortFlag)
+		[objItem setShortLabelFlag:true];
 
 	return objItem;
 }
 
 - (QSFormItem *)getFormItemWithKey:(NSString *)strKey {
 	for (QSFormItem * objItem in _objFormItemArray) {
-		if ([[objItem Key] isEqualToString:strKey])
+		if ([[objItem key] isEqualToString:strKey])
 			return objItem;
 	}
 	return nil;
@@ -186,9 +186,9 @@
 
 
 - (void)dealloc {
-	[self SelectedIndexPath:nil];
-	[self HeaderText:nil];
-	[self NavigatedViewController:nil];
+	[self setSelectedIndexPath:nil];
+	[self setHeaderText:nil];
+	[self setNavigatedViewController:nil];
 	[_objFormItemArray release];
     [super dealloc];
 }
@@ -236,7 +236,7 @@
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-	[(QSFormItem *)[_objFormItemArray objectAtIndex:[indexPath row]] IndexPath:indexPath];
+	[(QSFormItem *)[_objFormItemArray objectAtIndex:[indexPath row]] setIndexPath:indexPath];
 	return [(QSFormItem *)[_objFormItemArray objectAtIndex:[indexPath row]] getUITableViewCellForUITableView:tableView];
 }
 
@@ -261,7 +261,7 @@
 		}
 
 		[(QSFormItem *)[_objFormItemArray objectAtIndex:[_objSelectedIndexPath row]] tableViewCellUnselect:[tableView cellForRowAtIndexPath:_objSelectedIndexPath]];
-		[self SelectedIndexPath:nil];
+		[self setSelectedIndexPath:nil];
 	} else {
 		_blnSuspendScrollRestoreFlag = false;
 	}
@@ -270,7 +270,7 @@
 	bool blnSelectFlag = [(QSFormItem *)[_objFormItemArray objectAtIndex:[indexPath row]] tableViewCellTapped:[tableView cellForRowAtIndexPath:indexPath]];
 
 	if (blnSelectFlag) {
-		[self SelectedIndexPath:indexPath];
+		[self setSelectedIndexPath:indexPath];
 	}
 
 	return nil;
@@ -280,7 +280,7 @@
 	// If there is an already-selected row, let's tell the FormItem at that row to "unselect"
 	if (_objSelectedIndexPath) {
 		[(QSFormItem *)[_objFormItemArray objectAtIndex:[_objSelectedIndexPath row]] tableViewCellUnselect:[[self tableView] cellForRowAtIndexPath:_objSelectedIndexPath]];
-		[self SelectedIndexPath:nil];
+		[self setSelectedIndexPath:nil];
 	}
 }
 

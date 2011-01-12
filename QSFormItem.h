@@ -60,14 +60,14 @@
 - (bool)tableViewCellTapped:(UITableViewCell *)objCell;
 - (void)tableViewCellUnselect:(UITableViewCell *)objCell;
 
-@property (nonatomic, assign, getter=Index, setter=Index) NSInteger _intIndex;
-@property (nonatomic, retain, getter=IndexPath, setter=IndexPath) NSIndexPath * _objIndexPath;
-@property (nonatomic, retain, getter=Key, setter=Key) NSString * _strKey;
-@property (nonatomic, retain, getter=Label, setter=Label) NSString * _strLabel;
-@property (nonatomic, retain, getter=Form, setter=Form) QSFormViewController * _objForm;
-@property (nonatomic, assign, getter=ShortLabelFlag, setter=ShortLabelFlag) bool _blnShortLabelFlag;
-@property (nonatomic, retain, getter=SubscreenPrompt, setter=SubscreenPrompt) NSString * _strSubscreenPrompt;
-@property (nonatomic, assign, getter=ChangedFlag) bool _blnChangedFlag;
-@property (nonatomic, assign, getter=HiddenFlag, setter=HiddenFlag) bool _blnHiddenFlag;
+@property (nonatomic, assign, getter=index, setter=setIndex) NSInteger _intIndex;
+@property (nonatomic, retain, getter=indexPath, setter=setIndexPath) NSIndexPath * _objIndexPath;
+@property (nonatomic, retain, getter=key, setter=setKey) NSString * _strKey;
+@property (nonatomic, retain, getter=label, setter=setLabel) NSString * _strLabel;
+@property (nonatomic, retain, getter=form, setter=setForm) QSFormViewController * _objForm;
+@property (nonatomic, assign, getter=shortLabelFlag, setter=setShortLabelFlag) bool _blnShortLabelFlag;
+@property (nonatomic, retain, getter=subscreenPrompt, setter=setSubscreenPrompt) NSString * _strSubscreenPrompt;
+@property (nonatomic, assign, getter=changedFlag) bool _blnChangedFlag;
+@property (nonatomic, assign, getter=hiddenFlag, setter=setHiddenFlag) bool _blnHiddenFlag;
 
 @end

@@ -33,10 +33,10 @@
 	NSString * _strOverrideOffLabel;
 }
 
-@property (nonatomic, assign, getter=Value, setter=Value) bool _blnValue;
-@property (nonatomic, assign, getter=ValueExists) bool _blnValueExists;
-@property (nonatomic, retain, getter=OverrideOnLabel, setter=OverrideOnLabel) NSString * _strOverrideOnLabel;
-@property (nonatomic, retain, getter=OverrideOffLabel, setter=OverrideOffLabel) NSString * _strOverrideOffLabel;
+@property (nonatomic, assign, getter=value, setter=setValue) bool _blnValue;
+@property (nonatomic, assign, getter=valueExists) bool _blnValueExists;
+@property (nonatomic, retain, getter=overrideOnLabel, setter=setOverrideOnLabel) NSString * _strOverrideOnLabel;
+@property (nonatomic, retain, getter=overrideOffLabel, setter=setOverrideOffLabel) NSString * _strOverrideOffLabel;
 
 - (IBAction)chkFieldTap:(id)sender;
 - (IBAction)unansweredClick:(id)sender;

@@ -94,17 +94,17 @@
 }
 
 - (IBAction)textFieldStart:(id)sender {
-	[_objForm SelectedIndexPath:_objIndexPath];
+	[_objForm setSelectedIndexPath:_objIndexPath];
 }
 
 - (IBAction)textFieldDone:(id)sender {
 	_blnChangedFlag = true;
-	[_objForm SelectedIndexPath:nil];
-	[self Value:[NSString stringWithString:((UITextField *)sender).text]];
+	[_objForm setSelectedIndexPath:nil];
+	[self setValue:[NSString stringWithString:((UITextField *)sender).text]];
 }
 
 - (void)dealloc {
-	[self Value:nil];
+	[self setValue:nil];
 	[super dealloc];
 }
 

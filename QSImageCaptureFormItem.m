@@ -72,7 +72,7 @@
 }
 
 - (void)eraseClick:(id)sender {
-	[self Image:nil];
+	[self setImage:nil];
 	if (_objOnChangeTarget) [_objOnChangeTarget performSelector:_objOnChangeAction withObject:self];
 }
 
@@ -108,14 +108,14 @@
 	[objImagePicker setAllowsEditing:false];
 	[objImagePicker setSourceType:UIImagePickerControllerSourceTypeCamera];
 
-	[[_objForm NavigatedViewController] presentModalViewController:objImagePicker animated:true];
+	[[_objForm navigatedViewController] presentModalViewController:objImagePicker animated:true];
 	[objImagePicker autorelease];
 	return false;
 }
 
 
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info {
-	[self Image:(UIImage *)[info objectForKey:UIImagePickerControllerOriginalImage]];
+	[self setImage:(UIImage *)[info objectForKey:UIImagePickerControllerOriginalImage]];
     [[picker parentViewController] dismissModalViewControllerAnimated:true];
 	if (_objOnChangeTarget) [_objOnChangeTarget performSelector:_objOnChangeAction withObject:self];
 }
@@ -125,7 +125,7 @@
 }
 
 - (void)dealloc {
-	[self Image:nil];
+	[self setImage:nil];
 	[_imgView release];
 	[_imgTrash release];
 	[super dealloc];

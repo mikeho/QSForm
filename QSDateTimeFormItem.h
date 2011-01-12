@@ -34,9 +34,9 @@
 	UIDatePicker * _objPicker;
 }
 
-@property (nonatomic, retain, getter=Value, setter=Value) NSDate * _dttValue;
-@property (nonatomic, assign, getter=TimeFlag, setter=TimeFlag) bool _blnTimeFlag;
-@property (nonatomic, retain, getter=DateTimeFormat, setter=DateTimeFormat) NSString * _strDateTimeFormat;
+@property (nonatomic, retain, getter=value, setter=setValue) NSDate * _dttValue;
+@property (nonatomic, assign, getter=timeFlag, setter=setTimeFlag) bool _blnTimeFlag;
+@property (nonatomic, retain, getter=dateTimeFormat, setter=setDateTimeFormat) NSString * _strDateTimeFormat;
 
 - (QSDateTimeFormItem *)initWithKey:(NSString *)strKey Label:(NSString *)strLabel Value:(NSDate *)dttValue;
 @end

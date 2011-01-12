@@ -35,7 +35,7 @@
 	UIButton * _imgTrash;
 }
 
-@property (nonatomic, retain, getter=Image, setter=Image) UIImage * _objImage;
+@property (nonatomic, retain, getter=image, setter=setImage) UIImage * _objImage;
 
 - (QSImageCaptureFormItem *)initWithKey:(NSString *)strKey Label:(NSString *)strLabel Image:(UIImage *)objImage;
 - (void)eraseClick:(id)sender;

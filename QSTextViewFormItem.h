@@ -33,10 +33,10 @@
 	UITextAutocapitalizationType _intAutocapitalizationType;
 }
 
-@property (nonatomic, retain, getter=Value, setter=Value) NSString * _strValue;
-@property (nonatomic, assign, getter=PasswordFlag, setter=PasswordFlag) bool _blnPasswordFlag;
-@property (nonatomic, assign, getter=AutocorrectionType, setter=AutocorrectionType) UITextAutocorrectionType _intAutocorrectionType;
-@property (nonatomic, assign, getter=AutocapitalizationType, setter=AutocapitalizationType) UITextAutocapitalizationType _intAutocapitalizationType;
+@property (nonatomic, retain, getter=value, setter=setValue) NSString * _strValue;
+@property (nonatomic, assign, getter=passwordFlag, setter=setPasswordFlag) bool _blnPasswordFlag;
+@property (nonatomic, assign, getter=autocorrectionType, setter=setAutocorrectionType) UITextAutocorrectionType _intAutocorrectionType;
+@property (nonatomic, assign, getter=autocapitalizationType, setter=setAutocapitalizationType) UITextAutocapitalizationType _intAutocapitalizationType;
 
 - (QSTextViewFormItem *)initWithKey:(NSString *)strKey Label:(NSString *)strLabel Value:(NSString *)strValue;
 - (IBAction)textFieldDone:(id)sender;

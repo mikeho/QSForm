@@ -33,7 +33,7 @@
 
 - (QSDisplayTextFormItem *)initWithKey:(NSString *)strKey Text:(NSString *)strText {
 	if (self = (QSDisplayTextFormItem *)[super initWithKey:strKey Label:nil]) {
-		[self Text:strText];
+		[self setText:strText];
 	}
 	return self;
 }
@@ -61,7 +61,7 @@
 }
 
 - (void)dealloc {
-	[self Text:nil];
+	[self setText:nil];
 	[super dealloc];
 }
 

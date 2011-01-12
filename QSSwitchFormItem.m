@@ -118,8 +118,8 @@
 }
 
 - (void)dealloc {
-	[self OverrideOnLabel:nil];
-	[self OverrideOffLabel:nil];
+	[self setOverrideOnLabel:nil];
+	[self setOverrideOffLabel:nil];
 	[super dealloc];
 }
 

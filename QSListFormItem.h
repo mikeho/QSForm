@@ -45,9 +45,9 @@
 	UILabel * _lblField;
 }
 
-@property (nonatomic, retain, getter=SingleValue, setter=SingleValue) NSString * _strSingleValue;
-@property (nonatomic, assign, getter=AllowOtherFlag, setter=AllowOtherFlag) bool _blnAllowOtherFlag;
-@property (nonatomic, assign, getter=DisplayMultiLineFlag, setter=DisplayMultiLineFlag) bool _blnDisplayMultiLineFlag;
+@property (nonatomic, retain, getter=singleValue, setter=setSingleValue) NSString * _strSingleValue;
+@property (nonatomic, assign, getter=allowOtherFlag, setter=setAllowOtherFlag) bool _blnAllowOtherFlag;
+@property (nonatomic, assign, getter=displayMultiLineFlag, setter=setDisplayMultiLineFlag) bool _blnDisplayMultiLineFlag;
 
 
 - (QSListFormItem *)initWithKey:(NSString *)strKey Label:(NSString *)strLabel SingleValue:(NSString *)strSingleValue;

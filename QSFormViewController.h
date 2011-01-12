@@ -31,7 +31,7 @@
 	UIViewController * _objNavigatedViewController;
 	NSString * _strHeaderText;
 	NSIndexPath * _objSelectedIndexPath;
-	bool _blnSetAllLabelsShortFlag;
+	bool _blnMakeAllLabelsShortFlag;
 	
 	CGRect _objCurrentFrame;
 	CGSize _objCurrentContentSize;
@@ -40,10 +40,10 @@
 	bool _blnSuspendScrollRestoreFlag;
 }
 
-@property (nonatomic, retain, getter=NavigatedViewController, setter=NavigatedViewController) UIViewController * _objNavigatedViewController;
-@property (nonatomic, retain, getter=HeaderText, setter=HeaderText) NSString * _strHeaderText;
-@property (nonatomic, retain, getter=SelectedIndexPath, setter=SelectedIndexPath) NSIndexPath * _objSelectedIndexPath;
-@property (nonatomic, assign, getter=SetAllLabelsShortFlag, setter=SetAllLabelsShortFlag) bool _blnSetAllLabelsShortFlag;
+@property (nonatomic, retain, getter=navigatedViewController, setter=setNavigatedViewController) UIViewController * _objNavigatedViewController;
+@property (nonatomic, retain, getter=headerText, setter=setHeaderText) NSString * _strHeaderText;
+@property (nonatomic, retain, getter=selectedIndexPath, setter=setSelectedIndexPath) NSIndexPath * _objSelectedIndexPath;
+@property (nonatomic, assign, getter=makeAllLabelsShortFlag, setter=setMakeAllLabelsShortFlag) bool _blnMakeAllLabelsShortFlag;
 
 - (QSFormViewController *)initAtTop:(NSInteger)intTop NavigatedViewController:(UIViewController *)objNavigatedViewController;
 - (QSFormItem *)addFormItem:(QSFormItem *)objItem;
