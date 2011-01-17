@@ -101,12 +101,18 @@
 	}
 }
 
-- (bool)tableViewCellTapped:(UITableViewCell *)objCell {
+- (bool)tableViewCellTapped:(UITableViewCell *)objCell {	
 	UIImagePickerController * objImagePicker = [[UIImagePickerController alloc] init];
 
 	[objImagePicker setDelegate:self];
 	[objImagePicker setAllowsEditing:false];
-	[objImagePicker setSourceType:UIImagePickerControllerSourceTypeCamera];
+	
+	if ([UIImagePickerController isSourceTypeAvailable: UIImagePickerControllerSourceTypeCamera]) {
+		// Has camera
+		[objImagePicker setSourceType:UIImagePickerControllerSourceTypeCamera];
+	} else {
+		[objImagePicker setSourceType: UIImagePickerControllerSourceTypeSavedPhotosAlbum];
+	}
 
 	[[_objForm navigatedViewController] presentModalViewController:objImagePicker animated:true];
 	[objImagePicker autorelease];
