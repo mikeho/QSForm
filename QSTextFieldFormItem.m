@@ -32,6 +32,8 @@
 @synthesize _blnPasswordFlag;
 @synthesize _intAutocorrectionType;
 @synthesize _intAutocapitalizationType;
+@synthesize _intKeyboardType;
+
 
 
 - (QSTextFieldFormItem *)initWithKey:(NSString *)strKey Label:(NSString *)strLabel Value:(NSString *)strValue {
@@ -41,6 +43,7 @@
 		_blnPasswordFlag = false;
 		_intAutocorrectionType = UITextAutocorrectionTypeDefault;
 		_intAutocapitalizationType = UITextAutocapitalizationTypeSentences;
+		_intKeyboardType = UIKeyboardTypeDefault;
 	}
 	return self;
 }
@@ -78,6 +81,7 @@
 	txtField.secureTextEntry = _blnPasswordFlag;
 	txtField.autocorrectionType = _intAutocorrectionType;
 	txtField.autocapitalizationType = _intAutocapitalizationType;
+	txtField.keyboardType = _intKeyboardType;
 
 	return objCell;
 }
