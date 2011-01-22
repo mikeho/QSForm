@@ -39,8 +39,12 @@
 
 - (QSListFormItem *)initWithKey:(NSString *)strKey Label:(NSString *)strLabel SingleValue:(NSString *)strSingleValue {
 	if (self = (QSListFormItem *)[super initWithKey:strKey Label:strLabel]) {
-		_strSingleValue = strSingleValue;
-		[_strSingleValue retain];
+		if ([strSingleValue length] > 0) {
+			_strSingleValue = strSingleValue;
+			[_strSingleValue retain];
+		} else {
+			_strSingleValue = nil;
+		}
 		_strNameArray = [[NSMutableArray alloc] init];
 		_strValueArray = [[NSMutableArray alloc] init];
 		
