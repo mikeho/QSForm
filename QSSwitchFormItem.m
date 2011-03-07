@@ -85,13 +85,19 @@
 	[imgUnanswered setHidden:_blnValueExists];
 
 	if (_strOverrideOnLabel) {
-		UILabel * lblLeft = [[[[[[chkField subviews] lastObject] subviews] objectAtIndex:2] subviews] objectAtIndex:0];
-		[lblLeft setText:_strOverrideOnLabel];
+		// This only works with iOS < 4.2
+		if ([[[[chkField subviews] lastObject] subviews] count]) {
+			UILabel * lblLeft = [[[[[[chkField subviews] lastObject] subviews] objectAtIndex:2] subviews] objectAtIndex:0];
+			[lblLeft setText:_strOverrideOnLabel];
+		}
 	}
 
 	if (_strOverrideOffLabel) {
-		UILabel * lblRight = [[[[[[chkField subviews] lastObject] subviews] objectAtIndex:2] subviews] objectAtIndex:1];
-		[lblRight setText:_strOverrideOffLabel];
+		// This only works with iOS < 4.2
+		if ([[[[chkField subviews] lastObject] subviews] count]) {
+			UILabel * lblRight = [[[[[[chkField subviews] lastObject] subviews] objectAtIndex:2] subviews] objectAtIndex:1];
+			[lblRight setText:_strOverrideOffLabel];
+		}
 	}
 
 	return objCell;
