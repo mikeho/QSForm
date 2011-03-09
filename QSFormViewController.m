@@ -96,9 +96,11 @@
 	[objScrollView setScrollEnabled:true];
 	[objScrollView setContentSize:CGSizeMake([UIScreen mainScreen].bounds.size.width, 1000)];
 
-	CGRect objRectToScrollTo = CGRectMake(0, fltYPosition, [UIScreen mainScreen].bounds.size.width, [[self getFormItemAtIndex:[_objSelectedIndexPath row]] getHeight] + kTopMargin*2);
-	[objScrollView scrollRectToVisible:objRectToScrollTo
-							  animated:true];
+	if (_objSelectedIndexPath) {
+		CGRect objRectToScrollTo = CGRectMake(0, fltYPosition, [UIScreen mainScreen].bounds.size.width, [[self getFormItemAtIndex:[_objSelectedIndexPath row]] getHeight] + kTopMargin*2);
+		[objScrollView scrollRectToVisible:objRectToScrollTo
+								  animated:true];
+	}
 }
 
 - (QSFormItem *)addFormItem:(QSFormItem *)objItem {
