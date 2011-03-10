@@ -43,4 +43,9 @@
 - (QSTextFieldFormItem *)initWithKey:(NSString *)strKey Label:(NSString *)strLabel Value:(NSString *)strValue;
 - (IBAction)textFieldDone:(id)sender;
 - (IBAction)textFieldStart:(id)sender;
+
+- (void)keyboardWillHide:(id)sender;
+- (void)resetScrollingStep1;
+- (void)resetScrollingStep2;
+- (void)keyboardWillShow:(id)sender;
 @end

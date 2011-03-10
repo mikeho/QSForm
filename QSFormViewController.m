@@ -32,6 +32,7 @@
 @synthesize _strHeaderText;
 @synthesize _objSelectedIndexPath;
 @synthesize _blnMakeAllLabelsShortFlag;
+@synthesize _blnSuspendScrollRestoreFlag;
 
 - (QSFormViewController *)initAtTop:(NSInteger)intTop NavigatedViewController:(UIViewController *)objNavigatedViewController {
 	if (self = [super initWithStyle:UITableViewStyleGrouped]) {
@@ -45,62 +46,8 @@
 		[_objNavigatedViewController retain];
 		[[_objNavigatedViewController view] addSubview:[self view]];
 		[[self view] setBackgroundColor:[UIColor clearColor]];
-		
-		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
-		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
 	}
 	return self;
-}
-
-- (void)resetScrolling {
-	UIScrollView * objScrollView = (UIScrollView *)[_objNavigatedViewController view];
-	[objScrollView setScrollEnabled:_blnCurrentScrollEnableFlag];
-	[objScrollView setContentSize:_objCurrentContentSize];
-}
-
-- (void)keyboardWillHide:(id)sender {
-	if (_blnSuspendScrollRestoreFlag) return;
-
-	UIScrollView * objScrollView = (UIScrollView *)[_objNavigatedViewController view];
-	[objScrollView setFrame:_objCurrentFrame];
-	[objScrollView setContentOffset:_objCurrentContentOffset animated:true];
-	[self performSelector:@selector(resetScrolling) withObject:nil afterDelay:0.4];
-}
-
-- (void)keyboardWillShow:(id)sender {
-	if (_blnSuspendScrollRestoreFlag) {
-		_blnSuspendScrollRestoreFlag = false;
-		return;
-	}
-
-	CGFloat fltYPosition = [self getYPositionForCellAtIndexPath:_objSelectedIndexPath];
-	fltYPosition -= kTopMargin;
-
-	UIScrollView * objScrollView = (UIScrollView *)[_objNavigatedViewController view];
-	_objCurrentFrame = [objScrollView frame];
-	_objCurrentContentSize = [objScrollView contentSize];
-	_objCurrentContentOffset = [objScrollView contentOffset];
-	_blnCurrentScrollEnableFlag = [objScrollView isScrollEnabled];
-	
-	CGFloat fltHeight;
-	if ([[_objNavigatedViewController navigationItem] prompt] == nil) {
-		fltHeight = 200;
-	} else {
-		fltHeight = 170;
-	}
-
-	[UIView beginAnimations:@"" context:NULL];
-	[objScrollView setFrame:CGRectMake(_objCurrentFrame.origin.x, _objCurrentFrame.origin.y, [UIScreen mainScreen].bounds.size.width, fltHeight)];
-	[UIView commitAnimations];
-
-	[objScrollView setScrollEnabled:true];
-	[objScrollView setContentSize:CGSizeMake([UIScreen mainScreen].bounds.size.width, 1000)];
-
-	if (_objSelectedIndexPath) {
-		CGRect objRectToScrollTo = CGRectMake(0, fltYPosition, [UIScreen mainScreen].bounds.size.width, [[self getFormItemAtIndex:[_objSelectedIndexPath row]] getHeight] + kTopMargin*2);
-		[objScrollView scrollRectToVisible:objRectToScrollTo
-								  animated:true];
-	}
 }
 
 - (QSFormItem *)addFormItem:(QSFormItem *)objItem {

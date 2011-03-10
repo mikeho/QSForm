@@ -25,6 +25,14 @@
 
 #import <UIKit/UITableView.h>
 #import "QSForm.h"
+#import "QSControls.h"
+
+static CGRect _TextFieldFormItem_objCurrentFrame;
+static CGSize _TextFieldFormItem_objCurrentContentSize;
+static CGPoint _TextFieldFormItem_objCurrentContentOffset;
+static bool _TextFieldFormItem_blnCurrentScrollEnableFlag;
+static bool _TextFieldFormItem_blnIsScrollingFlag;
+static bool _TextFieldFormItem_blnIsCleaningUpFlag;
 
 @implementation QSTextFieldFormItem
 
@@ -99,13 +107,87 @@
 
 - (IBAction)textFieldStart:(id)sender {
 	[_objForm setSelectedIndexPath:_objIndexPath];
+	[self keyboardWillShow:self];
 }
 
 - (IBAction)textFieldDone:(id)sender {
 	_blnChangedFlag = true;
 	[_objForm setSelectedIndexPath:nil];
 	[self setValue:[NSString stringWithString:((UITextField *)sender).text]];
+	[self keyboardWillHide:self];
 }
+
+#pragma mark -
+#pragma mark Keyboard and Scroll Management
+
+
+- (void)resetScrollingStep1 {
+	if (_TextFieldFormItem_blnIsCleaningUpFlag) {
+		UIScrollView * objScrollView = (UIScrollView *)[_objForm.navigatedViewController view];
+		[objScrollView setFrame:_TextFieldFormItem_objCurrentFrame];
+		[objScrollView setContentOffset:_TextFieldFormItem_objCurrentContentOffset animated:true];
+	
+		[self performSelector:@selector(resetScrollingStep2) withObject:nil afterDelay:0.3];
+		_TextFieldFormItem_blnIsScrollingFlag = false;
+		_TextFieldFormItem_blnIsCleaningUpFlag = false;
+	}
+}
+
+- (void)resetScrollingStep2 {
+	UIScrollView * objScrollView = (UIScrollView *)[_objForm.navigatedViewController view];
+	[objScrollView setScrollEnabled:_TextFieldFormItem_blnCurrentScrollEnableFlag];
+	[objScrollView setContentSize:_TextFieldFormItem_objCurrentContentSize];
+}
+
+- (void)keyboardWillHide:(id)sender {
+	if (_objForm.suspendScrollRestoreFlag) return;
+	
+	[self performSelector:@selector(resetScrollingStep1) withObject:nil afterDelay:0.1];
+	_TextFieldFormItem_blnIsCleaningUpFlag = true;
+}
+
+- (void)keyboardWillShow:(id)sender {
+	if (_objForm.suspendScrollRestoreFlag) {
+		[_objForm setSuspendScrollRestoreFlag:false];
+		return;
+	}
+	
+	UIScrollView * objScrollView = (UIScrollView *)[_objForm.navigatedViewController view];
+
+	CGFloat fltYPosition = [_objForm getYPositionForCellAtIndexPath:_objForm.selectedIndexPath];
+	fltYPosition -= kTopMargin;
+
+	// Are we "already scrolling"?  If not, let's store the current ScrollView data
+	if (!_TextFieldFormItem_blnIsScrollingFlag) {
+		_TextFieldFormItem_objCurrentFrame = [objScrollView frame];
+		_TextFieldFormItem_objCurrentContentSize = [objScrollView contentSize];
+		_TextFieldFormItem_objCurrentContentOffset = [objScrollView contentOffset];
+		_TextFieldFormItem_blnCurrentScrollEnableFlag = [objScrollView isScrollEnabled];
+		_TextFieldFormItem_blnIsScrollingFlag = true;
+	}
+	_TextFieldFormItem_blnIsCleaningUpFlag = false;
+
+	CGFloat fltHeight;
+	if ([[_objForm.navigatedViewController navigationItem] prompt] == nil) {
+		fltHeight = 200;
+	} else {
+		fltHeight = 170;
+	}
+	
+	[UIView beginAnimations:@"" context:NULL];
+	[objScrollView setFrame:CGRectMake(_TextFieldFormItem_objCurrentFrame.origin.x, _TextFieldFormItem_objCurrentFrame.origin.y, [UIScreen mainScreen].bounds.size.width, fltHeight)];
+	[UIView commitAnimations];
+	
+	[objScrollView setScrollEnabled:true];
+	[objScrollView setContentSize:CGSizeMake([UIScreen mainScreen].bounds.size.width, 1000)];
+	
+	CGRect objRectToScrollTo = CGRectMake(0, fltYPosition, [UIScreen mainScreen].bounds.size.width, [[_objForm getFormItemAtIndex:[_objForm.selectedIndexPath row]] getHeight] + kTopMargin*2);
+	[objScrollView scrollRectToVisible:objRectToScrollTo
+							  animated:true];
+}
+
+#pragma mark -
+#pragma mark Object Lifecycle
 
 - (void)dealloc {
 	[self setValue:nil];

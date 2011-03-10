@@ -32,18 +32,16 @@
 	NSString * _strHeaderText;
 	NSIndexPath * _objSelectedIndexPath;
 	bool _blnMakeAllLabelsShortFlag;
-	
-	CGRect _objCurrentFrame;
-	CGSize _objCurrentContentSize;
-	CGPoint _objCurrentContentOffset;
-	bool _blnCurrentScrollEnableFlag;
+
 	bool _blnSuspendScrollRestoreFlag;
+	
 }
 
 @property (nonatomic, retain, getter=navigatedViewController, setter=setNavigatedViewController) UIViewController * _objNavigatedViewController;
 @property (nonatomic, retain, getter=headerText, setter=setHeaderText) NSString * _strHeaderText;
 @property (nonatomic, retain, getter=selectedIndexPath, setter=setSelectedIndexPath) NSIndexPath * _objSelectedIndexPath;
 @property (nonatomic, assign, getter=makeAllLabelsShortFlag, setter=setMakeAllLabelsShortFlag) bool _blnMakeAllLabelsShortFlag;
+@property (nonatomic, assign, getter=suspendScrollRestoreFlag, setter=setSuspendScrollRestoreFlag) bool _blnSuspendScrollRestoreFlag;
 
 - (QSFormViewController *)initAtTop:(NSInteger)intTop NavigatedViewController:(UIViewController *)objNavigatedViewController;
 - (QSFormItem *)addFormItem:(QSFormItem *)objItem;
@@ -55,10 +53,6 @@
 - (CGFloat)adjustHeightToFit;
 - (CGFloat)getHeight;
 - (CGFloat)getYPositionForCellAtIndexPath:(NSIndexPath *)objIndexPath;
-
-- (void)keyboardWillShow:(id)sender;
-- (void)resetScrolling;
-- (void)keyboardWillHide:(id)sender;
 
 - (void)unselectTableCells;
 @end
