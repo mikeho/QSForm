@@ -29,17 +29,14 @@
 @interface QSSwitchFormItem : QSFormItem {
 	bool _blnValue;
 	bool _blnValueExists;
-	NSString * _strOverrideOnLabel;
-	NSString * _strOverrideOffLabel;
+	bool _blnAllowBlankResponse;
 }
 
 @property (nonatomic, assign, getter=value, setter=setValue) bool _blnValue;
 @property (nonatomic, assign, getter=valueExists) bool _blnValueExists;
-@property (nonatomic, retain, getter=overrideOnLabel, setter=setOverrideOnLabel) NSString * _strOverrideOnLabel;
-@property (nonatomic, retain, getter=overrideOffLabel, setter=setOverrideOffLabel) NSString * _strOverrideOffLabel;
+@property (nonatomic, assign, getter=allowBlankResponse, setter=setAllowBlankResponse) bool _blnAllowBlankResponse;
 
 - (IBAction)chkFieldTap:(id)sender;
-- (IBAction)unansweredClick:(id)sender;
 
 - (QSSwitchFormItem *)initWithKey:(NSString *)strKey Label:(NSString *)strLabel Value:(bool)blnValue;
 - (QSSwitchFormItem *)initWithKey:(NSString *)strKey Label:(NSString *)strLabel WithNullValue:(id)objNull;

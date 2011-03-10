@@ -30,13 +30,13 @@
 
 @synthesize _blnValue;
 @synthesize _blnValueExists;
-@synthesize _strOverrideOnLabel;
-@synthesize _strOverrideOffLabel;
+@synthesize _blnAllowBlankResponse;
 
 - (QSSwitchFormItem *)initWithKey:(NSString *)strKey Label:(NSString *)strLabel Value:(bool)blnValue {
 	if (self = (QSSwitchFormItem *)[super initWithKey:strKey Label:strLabel]) {
 		_blnValue = blnValue;
 		_blnValueExists = true;
+		_blnAllowBlankResponse = false;
 	}
 	return self;
 }
@@ -45,6 +45,7 @@
 	if (self = (QSSwitchFormItem *)[super initWithKey:strKey Label:strLabel]) {
 		_blnValue = false;
 		_blnValueExists = false;
+		_blnAllowBlankResponse = false;
 	}
 	return self;
 }
@@ -52,54 +53,34 @@
 - (UITableViewCell *)getUITableViewCellForUITableView:(UITableView *)objTableView {
 	UITableViewCell * objCell = [super getUITableViewCellForUITableView:objTableView];
 
-	UISwitch * chkField;
-	UIButton * imgUnanswered;
+	UIButton * btnSwitch;
 
 	if (_blnCreatedFlag) {
-		chkField = [[UISwitch alloc] initWithFrame:[self getControlFrameWithHeight:0]];
-		chkField.tag = _intIndex;
-		[objCell.contentView addSubview:chkField];
-		[chkField addTarget:self
-					 action:@selector(chkFieldTap:)
-		   forControlEvents:UIControlEventValueChanged];
-		[chkField release];
-
-		imgUnanswered = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-		[imgUnanswered setFrame:[self getControlFrameWithWidth:94 Height:27]];
-		[imgUnanswered setTag:_intIndex + 1];
-		[imgUnanswered setBackgroundImage:[UIImage imageNamed:@"switchUnanswered.png"] forState:UIControlStateNormal];
-		[imgUnanswered addTarget:self action:@selector(unansweredClick:) forControlEvents:UIControlEventTouchUpInside];
-		[objCell.contentView addSubview:imgUnanswered];
+		btnSwitch = [UIButton buttonWithType:UIButtonTypeCustom];
+		CGRect objFrame = [self getControlFrameWithWidth:27 Height:27];
+		objFrame.origin.y -= 4;
+		[btnSwitch setFrame:objFrame];
+		btnSwitch.tag = _intIndex;
+		[objCell.contentView addSubview:btnSwitch];
+		[btnSwitch addTarget:self action:@selector(chkFieldTap:) forControlEvents:UIControlEventTouchUpInside];
     } else {
-		chkField = nil;
-		imgUnanswered = nil;
+		btnSwitch = nil;
 		for (UIView * objView in objCell.contentView.subviews) {
-			if ([objView isMemberOfClass:[UISwitch class]])
-				chkField = (UISwitch *)objView;
-			else if ([objView tag] == _intIndex + 1)
-				imgUnanswered = (UIButton *)objView;
+			if (objView.tag == _intIndex)
+				btnSwitch = (UIButton *)objView;
 		}
 	}
 	
-	chkField.on = _blnValue;
-	[imgUnanswered setHidden:_blnValueExists];
-
-	if (_strOverrideOnLabel) {
-		// This only works with iOS < 4.2
-		if ([[[[chkField subviews] lastObject] subviews] count]) {
-			UILabel * lblLeft = [[[[[[chkField subviews] lastObject] subviews] objectAtIndex:2] subviews] objectAtIndex:0];
-			[lblLeft setText:_strOverrideOnLabel];
+	if (_blnValueExists) {
+		if (_blnValue) {
+			[btnSwitch setBackgroundImage:[UIImage imageNamed:@"QSSwitchOn.png"] forState:UIControlStateNormal];
+		} else {
+			[btnSwitch setBackgroundImage:[UIImage imageNamed:@"QSSwitchOff.png"] forState:UIControlStateNormal];
 		}
+	} else {
+		[btnSwitch setBackgroundImage:[UIImage imageNamed:@"QSSwitchBlank.png"] forState:UIControlStateNormal];
 	}
-
-	if (_strOverrideOffLabel) {
-		// This only works with iOS < 4.2
-		if ([[[[chkField subviews] lastObject] subviews] count]) {
-			UILabel * lblRight = [[[[[[chkField subviews] lastObject] subviews] objectAtIndex:2] subviews] objectAtIndex:1];
-			[lblRight setText:_strOverrideOffLabel];
-		}
-	}
-
+	
 	return objCell;
 }
 
@@ -110,22 +91,37 @@
 	return false;
 }
 
-- (IBAction)unansweredClick:(id)sender {
-	_blnChangedFlag = true;
-	_blnValueExists = true;
-	[_objForm redraw];
-	if (_objOnChangeTarget) [_objOnChangeTarget performSelector:_objOnChangeAction withObject:self];
-}
-
 - (IBAction)chkFieldTap:(id)sender {
-	_blnChangedFlag = true;
-	_blnValue = ((UISwitch *)sender).on;
+	if (_blnValueExists) {
+		if (_blnValue) {
+			_blnValue = false;
+		} else if (_blnAllowBlankResponse) {
+			_blnValueExists = false;
+		} else {
+			_blnValue = true;
+		}
+	} else {
+		_blnValueExists = true;
+		_blnValue = true;
+	}
+	
+
+	UIButton * btnSwitch = (UIButton *)sender;
+
+	if (_blnValueExists) {
+		if (_blnValue) {
+			[btnSwitch setBackgroundImage:[UIImage imageNamed:@"QSSwitchOn.png"] forState:UIControlStateNormal];
+		} else {
+			[btnSwitch setBackgroundImage:[UIImage imageNamed:@"QSSwitchOff.png"] forState:UIControlStateNormal];
+		}
+	} else {
+		[btnSwitch setBackgroundImage:[UIImage imageNamed:@"QSSwitchBlank.png"] forState:UIControlStateNormal];
+	}
+
 	if (_objOnChangeTarget) [_objOnChangeTarget performSelector:_objOnChangeAction withObject:self];
 }
 
 - (void)dealloc {
-	[self setOverrideOnLabel:nil];
-	[self setOverrideOffLabel:nil];
 	[super dealloc];
 }
 
