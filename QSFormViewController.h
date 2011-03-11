@@ -25,6 +25,12 @@
 
 #import <UIKit/UIKit.h>
 @class QSFormItem;
+@class QSFormViewController;
+
+@protocol QSFormDelegate
+@optional
+	- (void)formWillRedraw:(QSFormViewController *)objFormViewController;
+@end
 
 @interface QSFormViewController : UITableViewController {
 	NSMutableArray * _objFormItemArray;
@@ -34,9 +40,11 @@
 	bool _blnMakeAllLabelsShortFlag;
 
 	bool _blnSuspendScrollRestoreFlag;
+	id _objDelegate;
 	
 }
 
+@property (nonatomic, assign /* bind only */, getter=delegate, setter=setDelegate) id _objDelegate;
 @property (nonatomic, retain, getter=navigatedViewController, setter=setNavigatedViewController) UIViewController * _objNavigatedViewController;
 @property (nonatomic, retain, getter=headerText, setter=setHeaderText) NSString * _strHeaderText;
 @property (nonatomic, retain, getter=selectedIndexPath, setter=setSelectedIndexPath) NSIndexPath * _objSelectedIndexPath;

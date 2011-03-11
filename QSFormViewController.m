@@ -28,6 +28,7 @@
 
 @implementation QSFormViewController : UITableViewController
 
+@synthesize _objDelegate;
 @synthesize _objNavigatedViewController;
 @synthesize _strHeaderText;
 @synthesize _objSelectedIndexPath;
@@ -87,6 +88,10 @@
 
 - (void)redraw {
 	[[self tableView] reloadData];
+	
+	if ((_objDelegate != nil) && [_objDelegate respondsToSelector:@selector(formWillRedraw:)]) {
+		[_objDelegate formWillRedraw:self];
+	}
 }
 
 /*

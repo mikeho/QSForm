@@ -102,6 +102,7 @@
 
 - (CGFloat)getHeight {
 	if (_lblField != nil) {
+		[_lblField removeFromSuperview];
 		[_lblField release];
 		_lblField = nil;
 	}
