@@ -115,7 +115,7 @@
 
 	if (_blnMultipleSelectFlag) {
 		NSMutableArray * strSelectedValueArray = [[NSMutableArray alloc] init];
-		for (NSString * strSelectedValue in [self MultipleValueArray]) {
+		for (NSString * strSelectedValue in [self multipleValueArray]) {
 			for (NSInteger intIndex = 0; intIndex < [_strValueArray count]; intIndex++) {
 				NSString * strValue = (NSString *)[_strValueArray objectAtIndex:intIndex];
 				NSString * strName = (NSString *)[_strNameArray objectAtIndex:intIndex];
@@ -223,7 +223,7 @@
 	}
 }
 
-- (NSArray *)MultipleValueArray {
+- (NSArray *)multipleValueArray {
 	if (!_blnMultipleSelectFlag) NSAssert(false, @"Cannot ask for MultipleValues on a single-select List");
 
 	// Add each selected value from the arrays
