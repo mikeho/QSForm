@@ -38,6 +38,7 @@
 		_blnValueExists = true;
 		_blnAllowBlankResponse = false;
 	}
+	NSLog(@"Constructor called for %@ with %i", strLabel, blnValue);
 	return self;
 }
 
@@ -47,6 +48,7 @@
 		_blnValueExists = false;
 		_blnAllowBlankResponse = false;
 	}
+	NSLog(@"Constructor called for %@ with NULL", strLabel);
 	return self;
 }
 
@@ -85,13 +87,14 @@
 }
 
 - (bool)tableViewCellTapped:(UITableViewCell *)objCell {
-//	_blnChangedFlag = true;
-//	bool blnNewValue = !(((UISwitch *)[objCell.contentView viewWithTag:_intIndex]).on);
-//	[(UISwitch *)[objCell.contentView viewWithTag:_intIndex] setOn:blnNewValue animated:true];
+	UIButton * btnSwitch = [[objCell contentView] viewWithTag:_intIndex];
+	[self chkFieldTap:btnSwitch];
 	return false;
 }
 
 - (IBAction)chkFieldTap:(id)sender {
+	_blnChangedFlag = true;
+
 	if (_blnValueExists) {
 		if (_blnValue) {
 			_blnValue = false;
