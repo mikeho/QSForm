@@ -42,7 +42,6 @@
 	UITableViewCell * objCell = [super getUITableViewCellForUITableView:objTableView];
 
 	[self refreshImageView];
-	NSLog(@"%@", [objCell subviews]);
 	if ([[objCell subviews] indexOfObject:_imgView] == NSNotFound) {
 		[[objCell contentView] addSubview:_imgView];
 		[[objCell contentView] addSubview:_lblTapHere];
