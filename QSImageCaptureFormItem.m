@@ -41,6 +41,21 @@
 - (UITableViewCell *)getUITableViewCellForUITableView:(UITableView *)objTableView {
 	UITableViewCell * objCell = [super getUITableViewCellForUITableView:objTableView];
 
+	[self refreshImageView];
+	NSLog(@"%@", [objCell subviews]);
+	if ([[objCell subviews] indexOfObject:_imgView] == NSNotFound) {
+		[[objCell contentView] addSubview:_imgView];
+		[[objCell contentView] addSubview:_lblTapHere];
+		[[objCell contentView] addSubview:_imgTrash];
+	}
+
+	[_imgTrash removeTarget:nil action:NULL forControlEvents:UIControlEventAllEvents];
+	[_imgTrash addTarget:self action:@selector(eraseClick:) forControlEvents:UIControlEventTouchUpInside];
+
+	return objCell;
+}
+
+- (CGFloat)refreshImageView {
 	// Setup Trash Icon
 	if (_imgTrash == nil) {
 		_imgTrash = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -49,26 +64,44 @@
 		[_imgTrash setBackgroundImage:[UIImage imageNamed:@"trash.png"] forState:UIControlStateNormal];
 	}
 
-	[objCell addSubview:_imgTrash];
-	[_imgTrash removeTarget:nil action:NULL forControlEvents:UIControlEventAllEvents];
-	[_imgTrash addTarget:self action:@selector(eraseClick:) forControlEvents:UIControlEventTouchUpInside];
-
-	if (_imgView != nil) {
-		[[objCell contentView] addSubview:_imgView];
-		[_imgTrash setHidden:false];
-	} else {
-		UILabel * lblInfo = [[UILabel alloc] initWithFrame:[self getControlFrameWithHeight:25]];
-		[lblInfo setTag:_intIndex];
-		[lblInfo setText:@"Tap to Access Camera"];
-		[lblInfo setTextColor:[UIColor grayColor]];
-		[lblInfo setFont:[UIFont italicSystemFontOfSize:[UIFont systemFontSize]]];
-		[[objCell contentView] addSubview:lblInfo];
-		
-		[lblInfo release];
-		[_imgTrash setHidden:true];
+	if (_imgView == nil) {
+		_imgView = [[UIImageView alloc] initWithFrame:CGRectZero];
+		[_imgView setUserInteractionEnabled:false];
 	}
+	
+	if (_lblTapHere == nil) {
+		_lblTapHere = [[UILabel alloc] initWithFrame:[self getControlFrameWithHeight:25]];
+		[_lblTapHere setText:@"Tap to Access Camera"];
+		[_lblTapHere setTextColor:[UIColor grayColor]];
+		[_lblTapHere setFont:[UIFont italicSystemFontOfSize:[UIFont systemFontSize]]];
+	}
+	
+	// Image?
+	if (_objImage) {
+		[_lblTapHere setHidden:true];
+		[_imgTrash setHidden:false];
+		[_imgView setHidden:false];
+		
+		CGFloat fltWidth = [self getControlWidth];
+		CGFloat fltHeight = fltWidth * [_objImage size].height / [_objImage size].width;
+		CGRect objRect = CGRectMake((_blnShortLabelFlag ? kShortLabelWidth : kLabelWidth) + kLabelSideMargin + kLabelGutterMargin,
+									kLabelTopMargin,
+									fltWidth,
+									fltHeight);
+		[_imgView setFrame:objRect];
+		[_imgView setImage:_objImage];
+		
+		return fltHeight + 2*kLabelTopMargin;
 
-	return objCell;
+	// No Image
+	} else {
+		[_lblTapHere setHidden:false];
+		[_imgTrash setHidden:true];
+		[_imgView setHidden:true];
+		
+		[_imgView setImage:nil];
+		return 40.0f;
+	}
 }
 
 - (void)eraseClick:(id)sender {
@@ -77,28 +110,7 @@
 }
 
 - (CGFloat)getHeight {
-	if (_imgView != nil) {
-		[_imgView removeFromSuperview];
-		[_imgView release];
-		_imgView = nil;
-	}
-
-	if (_objImage) {
-		CGFloat fltWidth = [self getControlWidth];
-		CGFloat fltHeight = fltWidth * [_objImage size].height / [_objImage size].width;
-		CGRect objRect = CGRectMake((_blnShortLabelFlag ? kShortLabelWidth : kLabelWidth) + kLabelSideMargin + kLabelGutterMargin,
-									kLabelTopMargin,
-									fltWidth,
-									fltHeight);
-
-		_imgView = [[UIImageView alloc] initWithFrame:objRect];
-		[_imgView setImage:_objImage];
-		[_imgView setUserInteractionEnabled:false];
-
-		return fltHeight + 2*kLabelTopMargin;
-	} else {
-		return 40;
-	}
+	return [self refreshImageView];
 }
 
 - (bool)tableViewCellTapped:(UITableViewCell *)objCell {	
@@ -134,6 +146,7 @@
 	[self setImage:nil];
 	[_imgView release];
 	[_imgTrash release];
+	[_lblTapHere release];
 	[super dealloc];
 }
 

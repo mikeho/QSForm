@@ -33,10 +33,12 @@
 	// Used Internally
 	UIImageView * _imgView;
 	UIButton * _imgTrash;
+	UILabel * _lblTapHere;
 }
 
 @property (nonatomic, retain, getter=image, setter=setImage) UIImage * _objImage;
 
+- (CGFloat)refreshImageView;
 - (QSImageCaptureFormItem *)initWithKey:(NSString *)strKey Label:(NSString *)strLabel Image:(UIImage *)objImage;
 - (void)eraseClick:(id)sender;
 @end
