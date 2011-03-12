@@ -38,7 +38,7 @@
 		_blnValueExists = true;
 		_blnAllowBlankResponse = false;
 	}
-	NSLog(@"Constructor called for %@ with %i", strLabel, blnValue);
+
 	return self;
 }
 
