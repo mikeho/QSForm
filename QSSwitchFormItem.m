@@ -48,7 +48,7 @@
 		_blnValueExists = false;
 		_blnAllowBlankResponse = false;
 	}
-	NSLog(@"Constructor called for %@ with NULL", strLabel);
+
 	return self;
 }
 
@@ -87,7 +87,7 @@
 }
 
 - (bool)tableViewCellTapped:(UITableViewCell *)objCell {
-	UIButton * btnSwitch = [[objCell contentView] viewWithTag:_intIndex];
+	UIButton * btnSwitch = (UIButton *)[[objCell contentView] viewWithTag:_intIndex];
 	[self chkFieldTap:btnSwitch];
 	return false;
 }
