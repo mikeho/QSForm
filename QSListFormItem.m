@@ -92,27 +92,24 @@
 - (UITableViewCell *)getUITableViewCellForUITableView:(UITableView *)objTableView {
 	UITableViewCell * objCell = [super getUITableViewCellForUITableView:objTableView];
 	
-	[objCell setAccessoryType:UITableViewCellAccessoryDisclosureIndicator];
-	if ([objCell.contentView viewWithTag:_intIndex] != nil) {
-		[[objCell.contentView viewWithTag:_intIndex] removeFromSuperview];
+	[self refreshImageView];
+	if ([[objCell subviews] indexOfObject:_lblField] == NSNotFound) {
+		[[objCell contentView] addSubview:_lblField];
 	}
-	[objCell.contentView addSubview:_lblField];
+	
+	[objCell setAccessoryType:UITableViewCellAccessoryDisclosureIndicator];
 	return objCell;
 }
 
-- (CGFloat)getHeight {
-	if (_lblField != nil) {
-		[_lblField removeFromSuperview];
-		[_lblField release];
-		_lblField = nil;
+- (CGFloat)refreshImageView {
+	// Setup Label
+	if (_lblField == nil) {
+		// _lblField to retain
+		_lblField = [[UILabel alloc] initWithFrame:[self getControlFrameWithHeight:500]];
+		_lblField.tag = _intIndex;
+		[_lblField setLineBreakMode:UILineBreakModeWordWrap];
+		[_lblField setNumberOfLines:0];
 	}
-
-	// _lblField to retain
-	_lblField = [[UILabel alloc] initWithFrame:[self getControlFrameWithHeight:500]];
-	_lblField.tag = _intIndex;
-	
-	[_lblField setLineBreakMode:UILineBreakModeWordWrap];
-	[_lblField setNumberOfLines:0];
 
 	if (_blnMultipleSelectFlag) {
 		NSMutableArray * strSelectedValueArray = [[NSMutableArray alloc] init];
@@ -152,9 +149,13 @@
 		[_lblField setTextColor:[UIColor blackColor]];
 		[_lblField setFont:[UIFont systemFontOfSize:[UIFont labelFontSize]]];
 	}
-	
+
 	[QSLabels trimFrameHeightForLabel:_lblField WithMinHeight:25];
 	return fmax([super getHeight], kLabelTopMargin + _lblField.bounds.size.height + kLabelBottomMargin);
+}
+
+- (CGFloat)getHeight {
+	return [self refreshImageView];
 }
 
 - (bool)tableViewCellTapped:(UITableViewCell *)objCell {

@@ -49,9 +49,10 @@
 @property (nonatomic, assign, getter=allowOtherFlag, setter=setAllowOtherFlag) bool _blnAllowOtherFlag;
 @property (nonatomic, assign, getter=displayMultiLineFlag, setter=setDisplayMultiLineFlag) bool _blnDisplayMultiLineFlag;
 
-
 - (QSListFormItem *)initWithKey:(NSString *)strKey Label:(NSString *)strLabel SingleValue:(NSString *)strSingleValue;
 - (QSListFormItem *)initWithKey:(NSString *)strKey Label:(NSString *)strLabel MultipleValue:(NSArray *)strMultipleValueArray;
+
+- (CGFloat)refreshImageView;
 
 - (void)addItemWithName:(NSString *)strName;
 - (void)addItemWithName:(NSString *)strName Value:(NSString *)strValue;
