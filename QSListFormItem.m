@@ -150,6 +150,10 @@
 		[_lblField setFont:[UIFont systemFontOfSize:[UIFont labelFontSize]]];
 	}
 
+	// Setup the Height
+	CGRect objFrame = [_lblField frame];
+	objFrame.size.height = 1000;
+	[_lblField setFrame:objFrame];
 	[QSLabels trimFrameHeightForLabel:_lblField WithMinHeight:25];
 	return fmax([super getHeight], kLabelTopMargin + _lblField.bounds.size.height + kLabelBottomMargin);
 }
