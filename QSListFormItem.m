@@ -287,6 +287,8 @@
 		objCell = [[UITableViewCell alloc] initWithFrame:CGRectZero reuseIdentifier:strIdentifier];
 	}
 	
+	[[objCell textLabel] setTextColor:[UIColor blackColor]];
+
 	if (_blnDisplayMultiLineFlag) {
 		[[objCell textLabel] setLineBreakMode:UILineBreakModeWordWrap];
 		[[objCell textLabel] setNumberOfLines:0];
@@ -312,7 +314,6 @@
 			[tableView deselectRowAtIndexPath:indexPath animated:false];
 		} else {
 			[[objCell textLabel] setText:strOtherText];
-			[[objCell textLabel] setTextColor:[UIColor blackColor]];
 			[tableView selectRowAtIndexPath:indexPath animated:false scrollPosition:UITableViewScrollPositionNone];
 		}
 	} else {
