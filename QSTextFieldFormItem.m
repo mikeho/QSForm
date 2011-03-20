@@ -38,6 +38,7 @@ static bool _TextFieldFormItem_blnIsCleaningUpFlag;
 
 @synthesize _strValue;
 @synthesize _blnPasswordFlag;
+@synthesize _blnDisplayMultiLineFlag;
 @synthesize _intAutocorrectionType;
 @synthesize _intAutocapitalizationType;
 @synthesize _intKeyboardType;
@@ -49,6 +50,7 @@ static bool _TextFieldFormItem_blnIsCleaningUpFlag;
 		_strValue = strValue;
 		[_strValue retain];
 		_blnPasswordFlag = false;
+		_blnDisplayMultiLineFlag = false;
 		_intAutocorrectionType = UITextAutocorrectionTypeDefault;
 		_intAutocapitalizationType = UITextAutocapitalizationTypeSentences;
 		_intKeyboardType = UIKeyboardTypeDefault;
@@ -59,37 +61,23 @@ static bool _TextFieldFormItem_blnIsCleaningUpFlag;
 - (UITableViewCell *)getUITableViewCellForUITableView:(UITableView *)objTableView {
 	UITableViewCell * objCell = [super getUITableViewCellForUITableView:objTableView];
 
-	UITextField * txtField;
-
-	if (_blnCreatedFlag) {
-        txtField = [[UITextField alloc] initWithFrame:[self getControlFrameWithHeight:0]];
-        txtField.tag = _intIndex;
-        txtField.clearsOnBeginEditing = NO;
-		[txtField addTarget:self
-					 action:@selector(textFieldStart:)
-		   forControlEvents:UIControlEventEditingDidBegin];
-        [txtField addTarget:self 
-					 action:@selector(textFieldDone:) 
-		   forControlEvents:UIControlEventEditingDidEndOnExit];
-        [txtField addTarget:self 
-					 action:@selector(textFieldDone:) 
-		   forControlEvents:UIControlEventEditingDidEnd];
-		[objCell.contentView addSubview:txtField];
-		[txtField autorelease];
-    } else {
-		txtField = nil;
-		for (UIView * objView in objCell.contentView.subviews) {
-			if ([objView isMemberOfClass:[UITextField class]])
-				txtField = (UITextField*)objView;
-		}
+	if ([[objCell subviews] indexOfObject:_txtField] == NSNotFound) {
+		[objCell.contentView addSubview:_txtField];
+		[objCell.contentView addSubview:_lblField];
 	}
-	
-	[txtField setPlaceholder:_strLabel];
-	[txtField setText:_strValue];
-	txtField.secureTextEntry = _blnPasswordFlag;
-	txtField.autocorrectionType = _intAutocorrectionType;
-	txtField.autocapitalizationType = _intAutocapitalizationType;
-	txtField.keyboardType = _intKeyboardType;
+
+	if (_blnDisplayMultiLineFlag) {
+		if ([_strValue length]) {
+			[_txtField setHidden:true];
+			[_lblField setHidden:false];
+		} else {
+			[_txtField setHidden:false];
+			[_lblField setHidden:true];
+		}
+	} else {
+		[_txtField setHidden:false];
+		[_lblField setHidden:true];
+	}
 
 	return objCell;
 }
@@ -108,6 +96,10 @@ static bool _TextFieldFormItem_blnIsCleaningUpFlag;
 - (IBAction)textFieldStart:(id)sender {
 	[_objForm setSelectedIndexPath:_objIndexPath];
 	[self keyboardWillShow:self];
+	
+	// Swap Displays
+	[_lblField setHidden:true];
+	[_txtField setHidden:false];
 }
 
 - (IBAction)textFieldDone:(id)sender {
@@ -115,6 +107,58 @@ static bool _TextFieldFormItem_blnIsCleaningUpFlag;
 	[_objForm setSelectedIndexPath:nil];
 	[self setValue:[NSString stringWithString:((UITextField *)sender).text]];
 	[self keyboardWillHide:self];
+	
+	if (_blnDisplayMultiLineFlag) [_objForm redraw];
+}
+
+- (CGFloat)getHeight {
+	// Create UITextField if it has not yet been created
+	// Configure events handling on it as well
+	if (_txtField == nil) {
+        _txtField = [[UITextField alloc] initWithFrame:[self getControlFrameWithHeight:0]];
+        _txtField.tag = _intIndex;
+        _txtField.clearsOnBeginEditing = NO;
+		[_txtField addTarget:self
+					  action:@selector(textFieldStart:)
+			forControlEvents:UIControlEventEditingDidBegin];
+        [_txtField addTarget:self 
+					  action:@selector(textFieldDone:) 
+			forControlEvents:UIControlEventEditingDidEndOnExit];
+        [_txtField addTarget:self 
+					  action:@selector(textFieldDone:) 
+			forControlEvents:UIControlEventEditingDidEnd];
+	}
+
+	// Create UILabel (to display it as multiline if requested) if not yet created
+	if (_lblField == nil) {
+		_lblField = [[UILabel alloc] initWithFrame:[self getControlFrameWithHeight:0]];
+		_lblField.tag = _intIndex + 1;
+		
+		[_lblField setBackgroundColor:[UIColor clearColor]];
+		[_lblField setNumberOfLines:0];
+		[_lblField setLineBreakMode:UILineBreakModeWordWrap];
+	}
+
+	// Update TextField properties
+	[_txtField setPlaceholder:_strLabel];
+	[_txtField setText:_strValue];
+	_txtField.secureTextEntry = _blnPasswordFlag;
+	_txtField.autocorrectionType = _intAutocorrectionType;
+	_txtField.autocapitalizationType = _intAutocapitalizationType;
+	_txtField.keyboardType = _intKeyboardType;
+
+	// Update UILabel Properties (including Height)
+	[_lblField setText:_strValue];
+	CGRect objFrame = [_lblField frame];
+	objFrame.size.height = 5000;
+	[_lblField setFrame:objFrame];
+	[QSLabels trimFrameHeightForLabel:_lblField];
+
+	if (_blnDisplayMultiLineFlag) {
+		return MAX([super getHeight], _lblField.frame.size.height + kTopMargin*2);
+	} else {
+		return [super getHeight];
+	}
 }
 
 #pragma mark -
@@ -191,6 +235,8 @@ static bool _TextFieldFormItem_blnIsCleaningUpFlag;
 
 - (void)dealloc {
 	[self setValue:nil];
+	[_lblField release];
+	[_txtField release];
 	[super dealloc];
 }
 

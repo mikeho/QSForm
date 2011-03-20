@@ -29,13 +29,18 @@
 @interface QSTextFieldFormItem : QSFormItem {
 	NSString * _strValue;
 	bool _blnPasswordFlag;
+	bool _blnDisplayMultiLineFlag;
 	UITextAutocorrectionType _intAutocorrectionType;
 	UITextAutocapitalizationType _intAutocapitalizationType;
 	UIKeyboardType _intKeyboardType;
+	
+	UITextField * _txtField;
+	UILabel * _lblField;
 }
 
 @property (nonatomic, retain, getter=value, setter=setValue) NSString * _strValue;
 @property (nonatomic, assign, getter=passwordFlag, setter=setPasswordFlag) bool _blnPasswordFlag;
+@property (nonatomic, assign, getter=displayMultiLineFlag, setter=setDisplayMultiLineFlag) bool _blnDisplayMultiLineFlag;
 @property (nonatomic, assign, getter=autocorrectionType, setter=setAutocorrectionType) UITextAutocorrectionType _intAutocorrectionType;
 @property (nonatomic, assign, getter=autocapitalizationType, setter=setAutocapitalizationType) UITextAutocapitalizationType _intAutocapitalizationType;
 @property (nonatomic, assign, getter=keyboardType, setter=setKeyboardType) UIKeyboardType _intKeyboardType;
