@@ -345,6 +345,7 @@
 		_objAlertView = [[UIAlertView alloc] initWithTitle:@"Other..." message:@" " delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"OK", nil];
 		UITextField * txtValue = [[UITextField alloc] initWithFrame:CGRectMake(12.0, 45.0, 260.0, 25.0)];
 		[txtValue setBackgroundColor:[UIColor whiteColor]];
+		[txtValue setAutocorrectionType:UITextAutocorrectionTypeNo];
 		
 		if (_blnMultipleSelectFlag) {
 			[txtValue setText:_strOtherValue];
