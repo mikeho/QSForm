@@ -30,11 +30,19 @@
 	bool _blnValue;
 	bool _blnValueExists;
 	bool _blnAllowBlankResponse;
+	
+	NSString * _strSwitchOnImage;
+	NSString * _strSwitchOffImage;
+	NSString * _strSwitchBlankImage;
 }
 
 @property (nonatomic, assign, getter=value, setter=setValue) bool _blnValue;
 @property (nonatomic, assign, getter=valueExists) bool _blnValueExists;
 @property (nonatomic, assign, getter=allowBlankResponse, setter=setAllowBlankResponse) bool _blnAllowBlankResponse;
+
+@property (nonatomic, retain, getter=switchOnImage, setter=setSwitchOnImage) NSString * _strSwitchOnImage;
+@property (nonatomic, retain, getter=switchOffImage, setter=setSwitchOffImage) NSString * _strSwitchOffImage;
+@property (nonatomic, retain, getter=switchBlankImage, setter=setSwitchBlankImage) NSString * _strSwitchBlankImage;
 
 - (IBAction)chkFieldTap:(id)sender;
 

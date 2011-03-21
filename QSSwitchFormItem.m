@@ -31,12 +31,19 @@
 @synthesize _blnValue;
 @synthesize _blnValueExists;
 @synthesize _blnAllowBlankResponse;
+@synthesize _strSwitchOnImage;
+@synthesize _strSwitchOffImage;
+@synthesize _strSwitchBlankImage;
 
 - (QSSwitchFormItem *)initWithKey:(NSString *)strKey Label:(NSString *)strLabel Value:(bool)blnValue {
 	if (self = (QSSwitchFormItem *)[super initWithKey:strKey Label:strLabel]) {
 		_blnValue = blnValue;
 		_blnValueExists = true;
 		_blnAllowBlankResponse = false;
+		
+		_strSwitchOnImage = @"QSSwitchOn.png";
+		_strSwitchOffImage = @"QSSwitchOff.png";
+		_strSwitchBlankImage = @"QSSwitchBlank.png";
 	}
 
 	return self;
@@ -47,6 +54,10 @@
 		_blnValue = false;
 		_blnValueExists = false;
 		_blnAllowBlankResponse = false;
+		
+		_strSwitchOnImage = @"QSSwitchOn.png";
+		_strSwitchOffImage = @"QSSwitchOff.png";
+		_strSwitchBlankImage = @"QSSwitchBlank.png";
 	}
 
 	return self;
@@ -59,9 +70,6 @@
 
 	if (_blnCreatedFlag) {
 		btnSwitch = [UIButton buttonWithType:UIButtonTypeCustom];
-		CGRect objFrame = [self getControlFrameWithWidth:27 Height:27];
-		objFrame.origin.y -= 4;
-		[btnSwitch setFrame:objFrame];
 		btnSwitch.tag = _intIndex;
 		[objCell.contentView addSubview:btnSwitch];
 		[btnSwitch addTarget:self action:@selector(chkFieldTap:) forControlEvents:UIControlEventTouchUpInside];
@@ -73,16 +81,27 @@
 		}
 	}
 	
+
+	UIImage * imgToUse;
+
 	if (_blnValueExists) {
 		if (_blnValue) {
-			[btnSwitch setBackgroundImage:[UIImage imageNamed:@"QSSwitchOn.png"] forState:UIControlStateNormal];
+			imgToUse = [UIImage imageNamed:_strSwitchOnImage];
 		} else {
-			[btnSwitch setBackgroundImage:[UIImage imageNamed:@"QSSwitchOff.png"] forState:UIControlStateNormal];
+			imgToUse = [UIImage imageNamed:_strSwitchOffImage];
 		}
 	} else {
-		[btnSwitch setBackgroundImage:[UIImage imageNamed:@"QSSwitchBlank.png"] forState:UIControlStateNormal];
+		imgToUse = [UIImage imageNamed:_strSwitchBlankImage];
 	}
 	
+	// Set the image
+	[btnSwitch setBackgroundImage:imgToUse forState:UIControlStateNormal];
+	
+	// Adjust btn size
+	CGRect objFrame = [self getControlFrameWithWidth:imgToUse.size.width Height:imgToUse.size.height];
+	objFrame.origin.y -= 4;
+	[btnSwitch setFrame:objFrame];
+
 	return objCell;
 }
 
@@ -111,20 +130,33 @@
 
 	UIButton * btnSwitch = (UIButton *)sender;
 
+	UIImage * imgToUse;
+	
 	if (_blnValueExists) {
 		if (_blnValue) {
-			[btnSwitch setBackgroundImage:[UIImage imageNamed:@"QSSwitchOn.png"] forState:UIControlStateNormal];
+			imgToUse = [UIImage imageNamed:_strSwitchOnImage];
 		} else {
-			[btnSwitch setBackgroundImage:[UIImage imageNamed:@"QSSwitchOff.png"] forState:UIControlStateNormal];
+			imgToUse = [UIImage imageNamed:_strSwitchOffImage];
 		}
 	} else {
-		[btnSwitch setBackgroundImage:[UIImage imageNamed:@"QSSwitchBlank.png"] forState:UIControlStateNormal];
+		imgToUse = [UIImage imageNamed:_strSwitchBlankImage];
 	}
+	
+	// Set the image
+	[btnSwitch setBackgroundImage:imgToUse forState:UIControlStateNormal];
+	
+	// Adjust btn size
+	CGRect objFrame = [self getControlFrameWithWidth:imgToUse.size.width Height:imgToUse.size.height];
+	objFrame.origin.y -= 4;
+	[btnSwitch setFrame:objFrame];
 
 	if (_objOnChangeTarget) [_objOnChangeTarget performSelector:_objOnChangeAction withObject:self];
 }
 
 - (void)dealloc {
+	[_strSwitchOnImage release];
+	[_strSwitchOffImage release];
+	[_strSwitchBlankImage release];
 	[super dealloc];
 }
 
