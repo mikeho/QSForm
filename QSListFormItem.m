@@ -284,7 +284,7 @@
 	UITableViewCell * objCell = [[_objTableViewController tableView] dequeueReusableCellWithIdentifier:strIdentifier];
 
     if (objCell == nil) {
-		objCell = [[UITableViewCell alloc] initWithFrame:CGRectZero reuseIdentifier:strIdentifier];
+		objCell = [[[UITableViewCell alloc] initWithFrame:CGRectZero reuseIdentifier:strIdentifier] autorelease];
 	}
 	
 	[[objCell textLabel] setTextColor:[UIColor blackColor]];
@@ -311,6 +311,7 @@
 		if (strOtherText == nil) {
 			[[objCell textLabel] setText:@"Other..."];
 			[[objCell textLabel] setTextColor:[UIColor grayColor]];
+			[[objCell textLabel] setFont:[UIFont boldSystemFontOfSize:[UIFont labelFontSize]]];
 			[tableView deselectRowAtIndexPath:indexPath animated:false];
 		} else {
 			[[objCell textLabel] setText:strOtherText];
@@ -319,6 +320,31 @@
 	} else {
 		[[objCell textLabel] setText:[_strNameArray objectAtIndex:[indexPath row]]];
 
+		// Adjust font size
+		if (_blnDisplayMultiLineFlag) {
+			UILabel * lblText = [objCell textLabel];
+			CGFloat fltPointSize = [UIFont labelFontSize];
+			CGRect objFrame;
+			
+			[lblText setFont:[UIFont boldSystemFontOfSize:fltPointSize]];
+			objFrame = [lblText frame];
+			objFrame.size.width = [UIScreen mainScreen].bounds.size.width - 40;
+			objFrame.size.height = 1000;
+			[lblText setFrame:objFrame];
+			[QSLabels trimFrameHeightForLabel:lblText WithMinHeight:40];
+			
+			while ([lblText frame].size.height > 40) {
+				fltPointSize -= 1.0f;
+				[lblText setFont:[UIFont boldSystemFontOfSize:fltPointSize]];
+				objFrame = [lblText frame];
+				objFrame.size.height = 1000;
+				[lblText setFrame:objFrame];
+				[QSLabels trimFrameHeightForLabel:lblText WithMinHeight:40];
+			}
+			[objCell setNeedsLayout];
+			[objCell setNeedsDisplay];
+		}
+		
 		if (_blnMultipleSelectFlag) {
 			if ([(NSNumber *)[_blnSelectedArray objectAtIndex:[indexPath row]] boolValue]) {
 				[tableView selectRowAtIndexPath:indexPath animated:false scrollPosition:UITableViewScrollPositionNone];
