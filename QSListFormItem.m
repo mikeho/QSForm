@@ -61,7 +61,9 @@
 		_strNameArray = [[NSMutableArray alloc] init];
 		_strValueArray = [[NSMutableArray alloc] init];
 		_blnSelectedArray = [[NSMutableArray alloc] init];
-		_strOtherValue = nil;
+
+		_strOtherValue = [QSStrings implodeArray:_strMultipleValueArray WithGlue:@", "];
+		[_strOtherValue retain];
 
 		_blnAllowOtherFlag = false;
 		_blnMultipleSelectFlag = true;
@@ -227,6 +229,15 @@
 			_strOtherValue = nil;
 		}
 	}
+}
+
+- (void)setMultipleValueArray:(NSArray *)strMultipleValueArray {
+	if (_strMultipleValueArray) {
+		[_strMultipleValueArray release];
+		_strMultipleValueArray = nil;
+	}
+	
+	_strMultipleValueArray = [[NSMutableArray alloc] initWithArray:strMultipleValueArray copyItems:true];
 }
 
 - (NSArray *)multipleValueArray {

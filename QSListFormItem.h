@@ -57,6 +57,7 @@
 - (void)addItemWithName:(NSString *)strName;
 - (void)addItemWithName:(NSString *)strName Value:(NSString *)strValue;
 - (void)addItemWithName:(NSString *)strName IntegerValue:(NSInteger)intValue;
+- (void)setMultipleValueArray:(NSArray *)strMultipleValueArray;
 - (NSArray *)multipleValueArray;
 - (void)removeAllItems;
 
