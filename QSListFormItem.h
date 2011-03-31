@@ -40,6 +40,8 @@
 	bool _blnAllowOtherFlag;
 	bool _blnMultipleSelectFlag;
 	bool _blnDisplayMultiLineFlag;
+	UIColor * _objBackgroundColor;
+	UIColor * _objAlternateBackgroundColor;
 
 	UIAlertView * _objAlertView;
 	UILabel * _lblField;
@@ -48,6 +50,8 @@
 @property (nonatomic, retain, getter=singleValue, setter=setSingleValue) NSString * _strSingleValue;
 @property (nonatomic, assign, getter=allowOtherFlag, setter=setAllowOtherFlag) bool _blnAllowOtherFlag;
 @property (nonatomic, assign, getter=displayMultiLineFlag, setter=setDisplayMultiLineFlag) bool _blnDisplayMultiLineFlag;
+@property (nonatomic, retain, getter=backgroundColor, setter=setBackgroundColor) UIColor * _objBackgroundColor;
+@property (nonatomic, retain, getter=alternateBackgroundColor, setter=setAlternateBackgroundColor) UIColor * _objAlternateBackgroundColor;
 
 - (QSListFormItem *)initWithKey:(NSString *)strKey Label:(NSString *)strLabel SingleValue:(NSString *)strSingleValue;
 - (QSListFormItem *)initWithKey:(NSString *)strKey Label:(NSString *)strLabel MultipleValue:(NSArray *)strMultipleValueArray;

@@ -33,6 +33,8 @@
 @synthesize _strSingleValue;
 @synthesize _blnAllowOtherFlag;
 @synthesize _blnDisplayMultiLineFlag;
+@synthesize _objBackgroundColor;
+@synthesize _objAlternateBackgroundColor;
 
 #pragma mark -
 #pragma mark Initializers
@@ -76,6 +78,8 @@
 
 - (void)dealloc {
 	[self setSingleValue:nil];
+	[self setBackgroundColor:nil];
+	[self setAlternateBackgroundColor:nil];
 	[_strNameArray release];
 	[_strValueArray release];
 	[_blnSelectedArray release];
@@ -299,6 +303,15 @@
 	}
 	
 	[[objCell textLabel] setTextColor:[UIColor blackColor]];
+	[[objCell textLabel] setBackgroundColor:[UIColor clearColor]];
+	// Set background color (if applicable)
+	if (_objBackgroundColor != nil) {
+		if (([indexPath row] % 2) && _objAlternateBackgroundColor) {
+			[[objCell contentView] setBackgroundColor:_objAlternateBackgroundColor];
+		} else {
+			[[objCell contentView] setBackgroundColor:_objBackgroundColor];
+		}
+	}
 
 	if (_blnDisplayMultiLineFlag) {
 		[[objCell textLabel] setLineBreakMode:UILineBreakModeWordWrap];
