@@ -59,7 +59,7 @@
 	if (_imgTrash == nil) {
 		_imgTrash = [UIButton buttonWithType:UIButtonTypeCustom];
 		[_imgTrash retain];
-		[_imgTrash setFrame:CGRectMake(55, 35, 22, 28)];
+		[_imgTrash setFrame:CGRectMake(41, 29, 50, 40)];
 		[_imgTrash setBackgroundImage:[UIImage imageNamed:@"trash.png"] forState:UIControlStateNormal];
 	}
 
