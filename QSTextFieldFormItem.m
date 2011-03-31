@@ -223,7 +223,7 @@ static bool _TextFieldFormItem_blnIsCleaningUpFlag;
 	[UIView commitAnimations];
 	
 	[objScrollView setScrollEnabled:true];
-	[objScrollView setContentSize:CGSizeMake([UIScreen mainScreen].bounds.size.width, 1000)];
+	[objScrollView setContentSize:CGSizeMake([UIScreen mainScreen].bounds.size.width, 5000)];
 	
 	CGRect objRectToScrollTo = CGRectMake(0, fltYPosition, [UIScreen mainScreen].bounds.size.width, [[_objForm getFormItemAtIndex:[_objForm.selectedIndexPath row]] getHeight] + kTopMargin*2);
 	[objScrollView scrollRectToVisible:objRectToScrollTo
