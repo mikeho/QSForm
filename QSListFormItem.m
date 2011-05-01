@@ -35,6 +35,8 @@
 @synthesize _blnDisplayMultiLineFlag;
 @synthesize _objBackgroundColor;
 @synthesize _objAlternateBackgroundColor;
+@synthesize _intOtherTextAutocorrectionType;
+@synthesize _intOtherTextAutocapitalizationType;
 
 #pragma mark -
 #pragma mark Initializers
@@ -52,6 +54,8 @@
 		
 		_blnAllowOtherFlag = false;
 		_blnMultipleSelectFlag = false;
+		_intOtherTextAutocorrectionType = UITextAutocorrectionTypeNo;
+		_intOtherTextAutocapitalizationType = UITextAutocapitalizationTypeNone;
 	}
 	return self;
 }
@@ -69,6 +73,8 @@
 
 		_blnAllowOtherFlag = false;
 		_blnMultipleSelectFlag = true;
+		_intOtherTextAutocorrectionType = UITextAutocorrectionTypeNo;
+		_intOtherTextAutocapitalizationType = UITextAutocapitalizationTypeNone;
 	}
 	return self;
 }
@@ -395,7 +401,8 @@
 		_objAlertView = [[UIAlertView alloc] initWithTitle:@"Other..." message:@" " delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"OK", nil];
 		UITextField * txtValue = [[UITextField alloc] initWithFrame:CGRectMake(12.0, 45.0, 260.0, 25.0)];
 		[txtValue setBackgroundColor:[UIColor whiteColor]];
-		[txtValue setAutocorrectionType:UITextAutocorrectionTypeNo];
+		[txtValue setAutocorrectionType:_intOtherTextAutocorrectionType];
+		[txtValue setAutocapitalizationType:_intOtherTextAutocapitalizationType];
 		
 		if (_blnMultipleSelectFlag) {
 			[txtValue setText:_strOtherValue];
