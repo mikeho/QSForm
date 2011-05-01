@@ -56,8 +56,8 @@
 @property (nonatomic, retain, getter=backgroundColor, setter=setBackgroundColor) UIColor * _objBackgroundColor;
 @property (nonatomic, retain, getter=alternateBackgroundColor, setter=setAlternateBackgroundColor) UIColor * _objAlternateBackgroundColor;
 
-@property (nonatomic, retain, getter=otherTextAutocorrectionType, setter=setOtherTextAutocorrectionType) NSInteger _intOtherTextAutocorrectionType;
-@property (nonatomic, retain, getter=otherTextAutocapitalizationType, setter=setOtherTextAutocapitalizationType) NSInteger _intOtherTextAutocapitalizationType;
+@property (nonatomic, assign, getter=otherTextAutocorrectionType, setter=setOtherTextAutocorrectionType) NSInteger _intOtherTextAutocorrectionType;
+@property (nonatomic, assign, getter=otherTextAutocapitalizationType, setter=setOtherTextAutocapitalizationType) NSInteger _intOtherTextAutocapitalizationType;
 
 - (QSListFormItem *)initWithKey:(NSString *)strKey Label:(NSString *)strLabel SingleValue:(NSString *)strSingleValue;
 - (QSListFormItem *)initWithKey:(NSString *)strKey Label:(NSString *)strLabel MultipleValue:(NSArray *)strMultipleValueArray;
