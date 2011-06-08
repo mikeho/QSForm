@@ -154,7 +154,6 @@
 	[_strKey release];
 	[_strLabel release];
 	[_strSubscreenPrompt release];
-	[_objForm release];
 	[_objIndexPath release];
 	[super dealloc];
 }

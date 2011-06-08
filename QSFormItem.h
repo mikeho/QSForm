@@ -64,7 +64,7 @@
 @property (nonatomic, retain, getter=indexPath, setter=setIndexPath) NSIndexPath * _objIndexPath;
 @property (nonatomic, retain, getter=key, setter=setKey) NSString * _strKey;
 @property (nonatomic, retain, getter=label, setter=setLabel) NSString * _strLabel;
-@property (nonatomic, retain, getter=form, setter=setForm) QSFormViewController * _objForm;
+@property (nonatomic, assign /* weakref */, getter=form, setter=setForm) QSFormViewController * _objForm;
 @property (nonatomic, assign, getter=shortLabelFlag, setter=setShortLabelFlag) bool _blnShortLabelFlag;
 @property (nonatomic, retain, getter=subscreenPrompt, setter=setSubscreenPrompt) NSString * _strSubscreenPrompt;
 @property (nonatomic, assign, getter=changedFlag) bool _blnChangedFlag;

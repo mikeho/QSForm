@@ -44,7 +44,6 @@
 		_blnMakeAllLabelsShortFlag = false;
 
 		_objNavigatedViewController = objNavigatedViewController;
-		[_objNavigatedViewController retain];
 		[[_objNavigatedViewController view] addSubview:[self view]];
 		[[self view] setBackgroundColor:[UIColor clearColor]];
 	}

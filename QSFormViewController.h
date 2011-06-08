@@ -45,7 +45,7 @@
 }
 
 @property (nonatomic, assign /* bind only */, getter=delegate, setter=setDelegate) id _objDelegate;
-@property (nonatomic, retain, getter=navigatedViewController, setter=setNavigatedViewController) UIViewController * _objNavigatedViewController;
+@property (nonatomic, assign /* weak ref */, getter=navigatedViewController, setter=setNavigatedViewController) UIViewController * _objNavigatedViewController;
 @property (nonatomic, retain, getter=headerText, setter=setHeaderText) NSString * _strHeaderText;
 @property (nonatomic, retain, getter=selectedIndexPath, setter=setSelectedIndexPath) NSIndexPath * _objSelectedIndexPath;
 @property (nonatomic, assign, getter=makeAllLabelsShortFlag, setter=setMakeAllLabelsShortFlag) bool _blnMakeAllLabelsShortFlag;
