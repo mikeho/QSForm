@@ -51,6 +51,7 @@
 
 	if (_blnCreatedFlag) {
 		lblField = [[UILabel alloc] initWithFrame:[self getControlFrameWithoutPaddingWithHeight:23]];
+		[lblField autorelease];
 		[lblField setFont:[UIFont systemFontOfSize:[UIFont systemFontSize]]];
 		[lblField setBackgroundColor:[UIColor clearColor]];
 		[objCell.contentView addSubview:lblField];
