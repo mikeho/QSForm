@@ -48,6 +48,7 @@
 		lblText = [[UILabel alloc] initWithFrame:CGRectMake(kSideMargin, 15, [UIScreen mainScreen].bounds.size.width - 2*kSideMargin, 25)];
 		[lblText setTag:_intIndex];
 		[objCell addSubview:lblText];
+		[lblText autorelease];
     } else {
 		lblText = (UILabel *)[objCell viewWithTag:_intIndex];
 	}
