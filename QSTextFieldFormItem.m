@@ -167,18 +167,20 @@ static bool _TextFieldFormItem_blnIsCleaningUpFlag;
 
 - (void)resetScrollingStep1 {
 	if (_TextFieldFormItem_blnIsCleaningUpFlag) {
-		UIScrollView * objScrollView = (UIScrollView *)[_objForm.navigatedViewController view];
-		[objScrollView setFrame:_TextFieldFormItem_objCurrentFrame];
-		[objScrollView setContentOffset:_TextFieldFormItem_objCurrentContentOffset animated:true];
+		if ((_objForm) && ([_objForm navigatedViewController]) && ([[_objForm navigatedViewController] view])) {
+			UIScrollView * objScrollView = (UIScrollView *)[[_objForm navigatedViewController] view];
+			[objScrollView setFrame:_TextFieldFormItem_objCurrentFrame];
+			[objScrollView setContentOffset:_TextFieldFormItem_objCurrentContentOffset animated:true];
 	
-		[self performSelector:@selector(resetScrollingStep2) withObject:nil afterDelay:0.3];
+			[self performSelector:@selector(resetScrollingStep2) withObject:nil afterDelay:0.3];
+		}
 		_TextFieldFormItem_blnIsScrollingFlag = false;
 		_TextFieldFormItem_blnIsCleaningUpFlag = false;
 	}
 }
 
 - (void)resetScrollingStep2 {
-	UIScrollView * objScrollView = (UIScrollView *)[_objForm.navigatedViewController view];
+	UIScrollView * objScrollView = (UIScrollView *)[[_objForm navigatedViewController] view];
 	[objScrollView setScrollEnabled:_TextFieldFormItem_blnCurrentScrollEnableFlag];
 	[objScrollView setContentSize:_TextFieldFormItem_objCurrentContentSize];
 }
