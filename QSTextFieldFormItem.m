@@ -103,12 +103,21 @@ static bool _TextFieldFormItem_blnIsCleaningUpFlag;
 }
 
 - (IBAction)textFieldDone:(id)sender {
-	_blnChangedFlag = true;
-	[_objForm setSelectedIndexPath:nil];
-	[self setValue:[NSString stringWithString:((UITextField *)sender).text]];
-	[self keyboardWillHide:self];
-	
-	if (_blnDisplayMultiLineFlag) [_objForm redraw];
+	if ([_objForm selectedIndexPath] &&
+		([_objForm selectedIndexPath].row == _objIndexPath.row)) {
+		_blnChangedFlag = true;
+		[_objForm setSelectedIndexPath:nil];
+		
+		NSString * strTextFieldText = ((UITextField *)sender).text;
+		if (strTextFieldText)
+			[self setValue:[NSString stringWithString:strTextFieldText]];
+		else
+			[self setValue:@""];
+		
+		[self keyboardWillHide:self];
+		
+		if (_blnDisplayMultiLineFlag) [_objForm redraw];
+	}
 }
 
 - (CGFloat)getHeight {
@@ -123,10 +132,7 @@ static bool _TextFieldFormItem_blnIsCleaningUpFlag;
 			forControlEvents:UIControlEventEditingDidBegin];
         [_txtField addTarget:self 
 					  action:@selector(textFieldDone:) 
-			forControlEvents:UIControlEventEditingDidEndOnExit];
-        [_txtField addTarget:self 
-					  action:@selector(textFieldDone:) 
-			forControlEvents:UIControlEventEditingDidEnd];
+			forControlEvents:UIControlEventEditingDidEnd | UIControlEventEditingDidEndOnExit];
 	}
 
 	// Create UILabel (to display it as multiline if requested) if not yet created

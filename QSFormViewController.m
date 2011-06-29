@@ -142,6 +142,12 @@
 	[self setSelectedIndexPath:nil];
 	[self setHeaderText:nil];
 	[self setNavigatedViewController:nil];
+
+	// Unreference self from all FormItems
+	for (QSFormItem * objFormItem in _objFormItemArray) {
+		[objFormItem setForm:nil];
+	}
+	
 	[_objFormItemArray release];
     [super dealloc];
 }

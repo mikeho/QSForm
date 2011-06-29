@@ -151,6 +151,7 @@
 }
 
 - (void)dealloc {
+	_objForm = nil;
 	[_strKey release];
 	[_strLabel release];
 	[_strSubscreenPrompt release];
