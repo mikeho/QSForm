@@ -37,6 +37,7 @@
 @synthesize _strSubscreenPrompt;
 @synthesize _blnChangedFlag;
 @synthesize _blnHiddenFlag;
+@synthesize _blnEnabledFlag;
 
 - (QSFormItem *)initWithKey:(NSString *)strKey Label:(NSString *)strLabel {
 	if (self = [super init]) {
@@ -44,6 +45,7 @@
 		_strLabel = [strLabel retain];
 		_blnShortLabelFlag = false;
 		_blnChangedFlag = false;
+		_blnEnabledFlag = true;
 	}
 	return self;
 }

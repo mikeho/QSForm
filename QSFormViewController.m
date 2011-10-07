@@ -226,10 +226,12 @@
 	}
 
 	// Alert the FormItem that it has been tapped -- find out whether or not it is telling us to "Select" it
-	bool blnSelectFlag = [(QSFormItem *)[_objFormItemArray objectAtIndex:[indexPath row]] tableViewCellTapped:[tableView cellForRowAtIndexPath:indexPath]];
+	if ([(QSFormItem *)[_objFormItemArray objectAtIndex:[indexPath row]] enabledFlag]) {
+		bool blnSelectFlag = [(QSFormItem *)[_objFormItemArray objectAtIndex:[indexPath row]] tableViewCellTapped:[tableView cellForRowAtIndexPath:indexPath]];
 
-	if (blnSelectFlag) {
-		[self setSelectedIndexPath:indexPath];
+		if (blnSelectFlag) {
+			[self setSelectedIndexPath:indexPath];
+		}
 	}
 
 	return nil;

@@ -37,6 +37,7 @@
 - (QSTextViewFormItem *)initWithKey:(NSString *)strKey Label:(NSString *)strLabel Value:(NSString *)strValue {
 	if (self = (QSTextViewFormItem *)[super initWithKey:strKey Label:strLabel]) {
 		_strValue = strValue;
+		[_strValue retain];
 		_blnPasswordFlag = false;
 		_intAutocorrectionType = UITextAutocorrectionTypeDefault;
 		_intAutocapitalizationType = UITextAutocapitalizationTypeSentences;
@@ -71,11 +72,13 @@
 				txtField = (UITextField*)objView;
 		}
 	}
-	
+
 	txtField.text = _strValue;
 	txtField.secureTextEntry = _blnPasswordFlag;
 	txtField.autocorrectionType = _intAutocorrectionType;
 	txtField.autocapitalizationType = _intAutocapitalizationType;
+	
+	txtField.enabled = _blnEnabledFlag;
 
 	return objCell;
 }
@@ -98,6 +101,11 @@
 - (IBAction)textFieldDone:(id)sender {
 	_strValue = [NSString stringWithString:((UITextField *)sender).text];
 	[_strValue retain];
+}
+
+- (void)dealloc {
+	[_strValue release];
+	[super dealloc];
 }
 
 @end
