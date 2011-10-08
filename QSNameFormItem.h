@@ -1,5 +1,5 @@
 /**
- * QSForm.h
+ * QSListFormItem.h
  * 
  * Copyright (c) 2010 - 2011, Quasidea Development, LLC
  * For more information, please go to http://www.quasidea.com/
@@ -23,30 +23,27 @@
  * THE SOFTWARE.
  */
 
-#ifndef __QSFORM_INCLUDE__
-#define __QSFORM_INCLUDE__
+#import <Foundation/Foundation.h>
+#import "QSFormItem.h"
 
-// The FormViewController
-#import "QSFormViewController.h"
+@interface QSNameFormItem : QSFormItem <UITableViewDelegate, UITableViewDataSource, UIAlertViewDelegate> {
+	int _intIdValue;
+	NSMutableArray * _arrNameArrayByLetter;
+	NSMutableDictionary * _dctFirstName;
+	NSMutableDictionary * _dctLastName;
 
-// All FormItem SubClasses Go Here
-#import "QSTextFieldFormItem.h"
-#import "QSTextViewFormItem.h"
-#import "QSSwitchFormItem.h"
-#import "QSListFormItem.h"
-#import "QSNameFormItem.h"
-#import "QSDisplayTextFormItem.h"
-#import "QSSectionHeaderFormItem.h"
-#import "QSImageCaptureFormItem.h"
-#import "QSDateTimeFormItem.h"
+	UITableViewController * _objTableViewController;
 
-// Constants
-#define kDefaultLabelTag 111
-#define kShortLabelWidth 75
-#define kLabelWidth 150
-#define kLabelGutterMargin 10
-#define kLabelTopMargin 10
-#define kLabelBottomMargin 5
-#define kLabelSideMargin 10
+	UILabel * _lblField;
+}
 
-#endif __QSFORM_INCLUDE__
+@property (nonatomic, assign, getter=idValue, setter=idValue) int _intIdValue;
+
+- (QSNameFormItem *)initWithKey:(NSString *)strKey Label:(NSString *)strLabel IdValue:(int)intIdValue;
+
+- (void)addItemWithFirstName:(NSString *)strFirstName lastName:(NSString *)strLastName idValue:(int)idValue;
+
+- (CGFloat)refreshImageView;
+
+- (IBAction)backClick:(id)sender;
+@end
