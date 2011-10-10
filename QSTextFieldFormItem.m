@@ -108,19 +108,20 @@ static bool _TextFieldFormItem_blnIsCleaningUpFlag;
 }
 
 - (IBAction)textFieldDone:(id)sender {
+	_blnChangedFlag = true;
+
+	NSString * strTextFieldText = ((UITextField *)sender).text;
+	if (strTextFieldText)
+		[self setValue:[NSString stringWithString:strTextFieldText]];
+	else
+		[self setValue:@""];
+
 	if ([_objForm selectedIndexPath] &&
 		([_objForm selectedIndexPath].row == _objIndexPath.row)) {
-		_blnChangedFlag = true;
 		[_objForm setSelectedIndexPath:nil];
 		
-		NSString * strTextFieldText = ((UITextField *)sender).text;
-		if (strTextFieldText)
-			[self setValue:[NSString stringWithString:strTextFieldText]];
-		else
-			[self setValue:@""];
-		
 		[self keyboardWillHide:self];
-		
+
 		if (_blnDisplayMultiLineFlag) [_objForm redraw];
 	}
 }
