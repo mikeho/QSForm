@@ -30,7 +30,8 @@
 
 @implementation QSNameFormItem
 
-@synthesize  _intIdValue;
+@synthesize _intIdValue;
+@synthesize _objTableHeaderView;
 
 #pragma mark -
 #pragma mark Initializers
@@ -38,13 +39,13 @@
 - (QSNameFormItem *)initWithKey:(NSString *)strKey Label:(NSString *)strLabel IdValue:(int)intIdValue {
 	if (self = (QSNameFormItem *)[super initWithKey:strKey Label:strLabel]) {
 		_intIdValue = intIdValue;
-		_dctFirstName = [[NSMutableDictionary alloc] init];
-		_dctLastName = [[NSMutableDictionary alloc] init];
+		_strNameValue = nil;
 
-		
 		_arrNameArrayByLetter = [[NSMutableArray alloc] initWithCapacity:26];
+		_arrIdArrayByLetter = [[NSMutableArray alloc] initWithCapacity:26];
 		for (int intIndex = 0; intIndex < 26; intIndex++) {
 			[_arrNameArrayByLetter addObject:[[[NSMutableArray alloc] init] autorelease]];
+			[_arrIdArrayByLetter addObject:[[[NSMutableArray alloc] init] autorelease]];
 		}
 	}
 	return self;
@@ -55,11 +56,12 @@
 #pragma mark Memory Management
 
 - (void)dealloc {
-	[_dctLastName release];
-	[_dctFirstName release];
+	[_strNameValue release];
 	[_lblField release];
 	[_objTableViewController release];
 	[_arrNameArrayByLetter release];
+	[_arrIdArrayByLetter release];
+	[_objTableViewController release];
 	[super dealloc];
 }
 
@@ -90,12 +92,8 @@
 	}
 
 	// Do we have a valid value?
-	if (_intIdValue &&
-		(([_dctLastName objectForKey:[NSNumber numberWithInt:_intIdValue]] != nil) ||
-		 ([_dctFirstName objectForKey:[NSNumber numberWithInt:_intIdValue]] != nil))) {
-		[_lblField setText:[NSString stringWithFormat:@"%@ %@",
-							[_dctFirstName objectForKey:[NSNumber numberWithInt:_intIdValue]],
-							[_dctLastName objectForKey:[NSNumber numberWithInt:_intIdValue]]]];
+	if (_intIdValue && (_strNameValue != nil)) {
+		[_lblField setText:_strNameValue];
 		[_lblField setTextColor:[UIColor blackColor]];
 		[_lblField setFont:[UIFont systemFontOfSize:[UIFont labelFontSize]]];
 	} else {
@@ -122,7 +120,13 @@
 	[[_objTableViewController navigationItem] setPrompt:[[[_objForm navigatedViewController] navigationItem] prompt]];
 	[[_objTableViewController tableView] setDelegate:self];
 	[[_objTableViewController tableView] setDataSource:self];
-	
+
+	// Add the Optional Bar (if applicable)
+	if (_objTableHeaderView != nil) {
+		[[_objTableViewController tableView] setTableHeaderView:_objTableHeaderView];
+	}
+
+	// Define Back Button Stuff
 	UIBarButtonItem * btnBack = [[UIBarButtonItem alloc] initWithTitle:@"Back"
 																 style:UIBarButtonItemStyleBordered
 																target:self
@@ -137,23 +141,62 @@
 	[[[_objForm navigatedViewController] navigationController] pushViewController:_objTableViewController
 																		 animated:true];
 
+	// Pre-select the Option/Value
+	int intSectionIndex = 0;
+	
+	for (int intLetterIndex = 0; intLetterIndex < 26; intLetterIndex++) {
+		if ([[_arrIdArrayByLetter objectAtIndex:intLetterIndex] count] > 0) {
+			NSArray * intIdNumberArray = [_arrIdArrayByLetter objectAtIndex:intLetterIndex];
+			for (int intRowIndex = 0; intRowIndex < [intIdNumberArray count]; intRowIndex++) {
+				if ([[intIdNumberArray objectAtIndex:intRowIndex] intValue] == _intIdValue) {
+					[[_objTableViewController tableView] selectRowAtIndexPath:[NSIndexPath indexPathForRow:intRowIndex inSection:intSectionIndex] animated:false scrollPosition:UITableViewScrollPositionMiddle];
+				}
+			}
+			intSectionIndex++;
+		}
+	}
+
 	return false;
 }
 
 #pragma mark -
 #pragma mark Name/Value Pair List Management
 - (void)addItemWithFirstName:(NSString *)strFirstName lastName:(NSString *)strLastName idValue:(int)idValue {
-	[_dctFirstName setObject:[NSString stringWithFormat:@"%@ %@", strFirstName, strLastName]
-					  forKey:[NSNumber numberWithInt:idValue]];
-	
-	// Update the Index Count
-	
+	// Figure out the First Letter's ORD Value
 	int intOrd = [[[strLastName uppercaseString] substringToIndex:1] cStringUsingEncoding:NSUTF8StringEncoding][0];
 	intOrd -= 'A';
 	NSAssert1(((intOrd >= 0) && (intOrd < 26)), @"Invalid Last Name: %@", strLastName);
 	
+	// Add the name and ID to the local arrays
 	[[_arrNameArrayByLetter objectAtIndex:intOrd] addObject:[NSString stringWithFormat:@"%@ %@", strFirstName, strLastName]];
+	[[_arrIdArrayByLetter objectAtIndex:intOrd] addObject:[NSNumber numberWithInt:idValue]];
+	
+	// Update our name value if it is what is selected
+	if (idValue == _intIdValue) {
+		_strNameValue = [[NSString stringWithFormat:@"%@ %@", strFirstName, strLastName] retain];
+	}
 }
+
+- (void)removeAllNames {
+	[_arrNameArrayByLetter release];
+	[_arrIdArrayByLetter release];
+	[_strNameValue release];
+
+	_strNameValue = nil;
+
+	_arrNameArrayByLetter = [[NSMutableArray alloc] initWithCapacity:26];
+	_arrIdArrayByLetter = [[NSMutableArray alloc] initWithCapacity:26];
+	for (int intIndex = 0; intIndex < 26; intIndex++) {
+		[_arrNameArrayByLetter addObject:[[[NSMutableArray alloc] init] autorelease]];
+		[_arrIdArrayByLetter addObject:[[[NSMutableArray alloc] init] autorelease]];
+	}
+	
+}
+
+- (void)refreshTableView {
+	if (_objTableViewController != nil) [(UITableView *)[_objTableViewController view] reloadData];
+}
+
 
 #pragma mark -
 #pragma mark List Selector TableViewController Management
@@ -231,13 +274,15 @@
 	[[objCell textLabel] setTextColor:[UIColor blackColor]];
 	[[objCell textLabel] setBackgroundColor:[UIColor clearColor]];
 
-	// Get Name Array
+	// Get Name  and IdNumber Array
 	NSArray * strNameArray;
+	NSArray * intIdNumberArray;
 	int intCurrentSectionNumber = 0;
 	for (int intIndex = 0; intIndex < 26; intIndex++) {
 		if ([[_arrNameArrayByLetter objectAtIndex:intIndex] count] > 0) {
 			if ([indexPath section] == intCurrentSectionNumber) {
 				strNameArray = [_arrNameArrayByLetter objectAtIndex:intIndex];
+				intIdNumberArray = [_arrIdArrayByLetter objectAtIndex:intIndex];
 			}
 			intCurrentSectionNumber++;
 		}
@@ -245,61 +290,31 @@
 
 	
 	[[objCell textLabel] setText:[strNameArray objectAtIndex:[indexPath row]]];
-
-//			if ([_strSingleValue isEqualToString:[_strValueArray objectAtIndex:[indexPath row]]]) {
-//				[tableView selectRowAtIndexPath:indexPath animated:false scrollPosition:UITableViewScrollPositionNone];
-//			} else {
-//				[tableView deselectRowAtIndexPath:indexPath animated:false];
-//			}
-
     return objCell;
 }
 
-/*
 - (NSIndexPath *)tableView:(UITableView *)tableView willSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 	_blnChangedFlag = true;
 
-	if (_blnAllowOtherFlag && ([indexPath row] == [_strNameArray count])) {
-		_objAlertView = [[UIAlertView alloc] initWithTitle:@"Other..." message:@" " delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"OK", nil];
-		UITextField * txtValue = [[UITextField alloc] initWithFrame:CGRectMake(12.0, 45.0, 260.0, 25.0)];
-		[txtValue setBackgroundColor:[UIColor whiteColor]];
-		[txtValue setAutocorrectionType:_intOtherTextAutocorrectionType];
-		[txtValue setAutocapitalizationType:_intOtherTextAutocapitalizationType];
-		
-		if (_blnMultipleSelectFlag) {
-			[txtValue setText:_strOtherValue];
-		} else {
-			if ([tableView cellForRowAtIndexPath:indexPath].isSelected) {
-				[txtValue setText:_strSingleValue];
+	int intSectionIndex = 0;
+	NSArray * strNameArray;
+	NSArray * intIdNumberArray;
+	for (int intIndex = 0; intIndex < 26; intIndex++) {
+		if ([[_arrNameArrayByLetter objectAtIndex:intIndex] count] > 0) {
+			if (intSectionIndex == [indexPath section]) {
+				strNameArray = [_arrNameArrayByLetter objectAtIndex:intIndex];
+				intIdNumberArray = [_arrIdArrayByLetter objectAtIndex:intIndex];
 			}
+			intSectionIndex++;
 		}
-		
-        [txtValue addTarget:self 
-					 action:@selector(textFieldDone:) 
-		   forControlEvents:UIControlEventEditingDidEndOnExit];
-		
-		[_objAlertView addSubview:txtValue];
-		[_objAlertView show];
-		[txtValue release];
-		return nil;
-	} else {
-		if (_blnMultipleSelectFlag) {
-			if ([(NSNumber *)[_blnSelectedArray objectAtIndex:[indexPath row]] boolValue]) {
-				[_blnSelectedArray replaceObjectAtIndex:[indexPath row] withObject:[NSNumber numberWithBool:false]];
-			} else {
-				[_blnSelectedArray replaceObjectAtIndex:[indexPath row] withObject:[NSNumber numberWithBool:true]];
-			}
-		} else {
-			if ([_strSingleValue isEqualToString:(NSString *)[_strValueArray objectAtIndex:[indexPath row]]]) {
-				[self setSingleValue:nil];
-			} else {
-				[self setSingleValue:[_strValueArray objectAtIndex:[indexPath row]]];
-			}
-		}
-		[tableView reloadData];
-		return nil;
 	}
-}*/
+	
+	[_strNameValue release];
+	_strNameValue = [[strNameArray objectAtIndex:[indexPath row]] retain];
+	_intIdValue = [[intIdNumberArray objectAtIndex:[indexPath row]] intValue];
+
+	return indexPath;
+}
 
 
 @end

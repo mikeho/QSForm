@@ -28,19 +28,24 @@
 
 @interface QSNameFormItem : QSFormItem <UITableViewDelegate, UITableViewDataSource, UIAlertViewDelegate> {
 	int _intIdValue;
+	NSString * _strNameValue;
+
 	NSMutableArray * _arrNameArrayByLetter;
-	NSMutableDictionary * _dctFirstName;
-	NSMutableDictionary * _dctLastName;
+	NSMutableArray * _arrIdArrayByLetter;
 
 	UITableViewController * _objTableViewController;
+	UIView * _objTableHeaderView;
 
 	UILabel * _lblField;
 }
 
 @property (nonatomic, assign, getter=idValue, setter=idValue) int _intIdValue;
+@property (nonatomic, retain, getter=tableHeaderView, setter=setTableHeaderView) UIView * _objTableHeaderView;
 
 - (QSNameFormItem *)initWithKey:(NSString *)strKey Label:(NSString *)strLabel IdValue:(int)intIdValue;
 
+- (void)removeAllNames;
+- (void)refreshTableView;
 - (void)addItemWithFirstName:(NSString *)strFirstName lastName:(NSString *)strLastName idValue:(int)idValue;
 
 - (CGFloat)refreshImageView;
