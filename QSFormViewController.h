@@ -30,6 +30,7 @@
 @protocol QSFormDelegate
 @optional
 	- (void)formWillRedraw:(QSFormViewController *)objFormViewController;
+	- (void)form:(QSFormViewController *)objFormViewController didSelectFormItem:(QSFormItem *)objFormItem;
 @end
 
 @interface QSFormViewController : UITableViewController {
@@ -55,6 +56,7 @@
 - (QSFormItem *)addFormItem:(QSFormItem *)objItem;
 - (QSFormItem *)getFormItemWithKey:(NSString *)strKey;
 - (QSFormItem *)getFormItemAtIndex:(NSInteger)intIndex;
+- (NSArray *)getFormItems;
 - (void)removeAllFormItems;
 - (void)redraw;
 

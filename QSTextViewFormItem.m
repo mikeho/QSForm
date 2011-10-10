@@ -26,13 +26,17 @@
 #import <UIKit/UITableView.h>
 #import "QSForm.h"
 
+// Added because we removed from QSForm as this is no longer being actively supported/maintained
+// Use QSTextFieldFormItem instead
+#import "QSTextViewFormItem.h"
+
 @implementation QSTextViewFormItem
 
 @synthesize _strValue;
 @synthesize _blnPasswordFlag;
 @synthesize _intAutocorrectionType;
 @synthesize _intAutocapitalizationType;
-
+@synthesize _intKeyboardType;
 
 - (QSTextViewFormItem *)initWithKey:(NSString *)strKey Label:(NSString *)strLabel Value:(NSString *)strValue {
 	if (self = (QSTextViewFormItem *)[super initWithKey:strKey Label:strLabel]) {
@@ -41,6 +45,7 @@
 		_blnPasswordFlag = false;
 		_intAutocorrectionType = UITextAutocorrectionTypeDefault;
 		_intAutocapitalizationType = UITextAutocapitalizationTypeSentences;
+		_intKeyboardType = UIKeyboardTypeDefault;
 	}
 	return self;
 }
@@ -77,6 +82,7 @@
 	txtField.secureTextEntry = _blnPasswordFlag;
 	txtField.autocorrectionType = _intAutocorrectionType;
 	txtField.autocapitalizationType = _intAutocapitalizationType;
+	txtField.keyboardType = _intKeyboardType;
 	
 	txtField.enabled = _blnEnabledFlag;
 

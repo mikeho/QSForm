@@ -100,6 +100,11 @@ static bool _TextFieldFormItem_blnIsCleaningUpFlag;
 	// Swap Displays
 	[_lblField setHidden:true];
 	[_txtField setHidden:false];
+	
+	// Perform Delegates (if applicable)
+	if (([_objForm delegate] != nil) && ([[_objForm delegate] respondsToSelector:@selector(form:didSelectFormItem:)])) {
+		[[_objForm delegate] form:_objForm didSelectFormItem:self];
+	}
 }
 
 - (IBAction)textFieldDone:(id)sender {
@@ -152,6 +157,7 @@ static bool _TextFieldFormItem_blnIsCleaningUpFlag;
 	_txtField.autocorrectionType = _intAutocorrectionType;
 	_txtField.autocapitalizationType = _intAutocapitalizationType;
 	_txtField.keyboardType = _intKeyboardType;
+	_txtField.enabled = _blnEnabledFlag;
 
 	// Update UILabel Properties (including Height)
 	[_lblField setText:_strValue];

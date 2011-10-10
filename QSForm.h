@@ -31,7 +31,6 @@
 
 // All FormItem SubClasses Go Here
 #import "QSTextFieldFormItem.h"
-#import "QSTextViewFormItem.h"
 #import "QSSwitchFormItem.h"
 #import "QSListFormItem.h"
 #import "QSNameFormItem.h"
@@ -39,6 +38,10 @@
 #import "QSSectionHeaderFormItem.h"
 #import "QSImageCaptureFormItem.h"
 #import "QSDateTimeFormItem.h"
+
+// No longer being mainted or in use
+// So leaving it out for now
+// #import "QSTextViewFormItem.h"
 
 // Constants
 #define kDefaultLabelTag 111

@@ -73,6 +73,11 @@
 	return [_objFormItemArray objectAtIndex:intIndex];
 }
 
+- (NSArray *)getFormItems {
+	return [NSArray arrayWithArray:_objFormItemArray];
+}
+
+
 - (CGFloat)adjustHeightToFit {
 	CGRect objFrame = self.tableView.frame;
 	objFrame.size.height = [_objFormItemArray count] * 20;
@@ -208,7 +213,7 @@
 	if (_objSelectedIndexPath == indexPath) {
 		return nil;
 	}
-	
+
 	// If there is an already-selected row, let's tell the FormItem at that row to "unselect"
 	if (_objSelectedIndexPath) {
 		// IF the currently selected and next selected are both TextFieldFormItems, we gotta suspend keyboard rescroll stuff
@@ -227,6 +232,11 @@
 
 	// Alert the FormItem that it has been tapped -- find out whether or not it is telling us to "Select" it
 	if ([(QSFormItem *)[_objFormItemArray objectAtIndex:[indexPath row]] enabledFlag]) {
+		// First, pass to the deleagte
+		if ((_objDelegate != nil) && ([_objDelegate respondsToSelector:@selector(form:didSelectFormItem:)])) {
+			[_objDelegate form:self didSelectFormItem:[_objFormItemArray objectAtIndex:[indexPath row]]];
+		}
+
 		bool blnSelectFlag = [(QSFormItem *)[_objFormItemArray objectAtIndex:[indexPath row]] tableViewCellTapped:[tableView cellForRowAtIndexPath:indexPath]];
 
 		if (blnSelectFlag) {
