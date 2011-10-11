@@ -42,6 +42,7 @@
 
 		_objFormItemArray = [[NSMutableArray alloc] init];
 		_blnMakeAllLabelsShortFlag = false;
+		_blnAnimateUpdateFlag = false;
 
 		_objNavigatedViewController = objNavigatedViewController;
 		[[_objNavigatedViewController view] addSubview:[self view]];
@@ -61,22 +62,95 @@
 	return objItem;
 }
 
-- (QSFormItem *)addFormItem:(QSFormItem *)objItem afterFormItemKey:(NSString *)strKey animated:(bool)blnAnimated {
+- (void)beginAnimatedUpdates {
+	NSAssert(_blnAnimateUpdateFlag == false, @"Cannot call beginAnimatedUpdates() when already in an animation state");
+	_blnAnimateUpdateFlag = true;
+	_blnNoMoreDeletesFlag = false;
+
+	_objAdditionIndexPaths = [[NSMutableArray alloc] init];
+	_objDeleteIndexPaths = [[NSMutableArray alloc] init];
+}
+
+- (void)endAnimatedUpdatesWithAddItemAnimation:(UITableViewRowAnimation)intAddItemAnimation withRemoveItemAnimation:(UITableViewRowAnimation)intRemoveItemAnimation  {
+	NSAssert(_blnAnimateUpdateFlag == true, @"Cannot call endAnimatedUpdates() when beginAnimatedUpdates() was never called");
+	_blnAnimateUpdateFlag = false;
+
+	if (([_objAdditionIndexPaths count] == 0) && ([_objDeleteIndexPaths count] == 0)) {
+		[_objAdditionIndexPaths release];
+		[_objDeleteIndexPaths release];
+		_objAdditionIndexPaths = nil;
+		_objDeleteIndexPaths = nil;
+	}
+	
+
+	// BEGIN Animation Block
+	[[self tableView] beginUpdates];
+	
+	// First perform Deletes (if applicable)
+	if ([_objDeleteIndexPaths count]) {
+		[[self tableView] deleteRowsAtIndexPaths:_objDeleteIndexPaths withRowAnimation:intRemoveItemAnimation];
+	}
+	
+	// Next perform Additions (if applicable)
+	if ([_objAdditionIndexPaths count]) {
+		[[self tableView] insertRowsAtIndexPaths:_objAdditionIndexPaths withRowAnimation:intAddItemAnimation];
+	}
+
+	// Commit Animation Block
+	[[self tableView] endUpdates];
+	
+	// Cleanup
+	[_objAdditionIndexPaths release];
+	[_objDeleteIndexPaths release];
+	_objAdditionIndexPaths = nil;
+	_objDeleteIndexPaths = nil;
+}
+
+- (QSFormItem *)addFormItem:(QSFormItem *)objItem afterFormItemKey:(NSString *)strKey {
+	NSAssert(_blnAnimateUpdateFlag == true, @"Cannot addFormItem with animation when beginAnimatedUpdates() was never called");
+	_blnNoMoreDeletesFlag = true;
+
+	// First, figure out the Position Index #
+	int intIndexPosition = -1;
+	for (int intIndex = 0; intIndex < [_objFormItemArray count]; intIndex++) {
+		if ([[[_objFormItemArray objectAtIndex:intIndex] key] isEqualToString:strKey]) {
+			intIndexPosition = intIndex + 1;
+		}
+	}
+	
+	NSAssert1(intIndexPosition >= 0, @"Cannot find form item with key: %@", strKey);
+
+	// Setup the Item itself
 	[objItem setIndex:([_objFormItemArray count] + 1000)];
 	[objItem setForm:self];
-	[_objFormItemArray insertObject:objItem atIndex:2];
-	
-	NSArray * arrInsertPaths = [NSArray arrayWithObjects:
-								[NSIndexPath indexPathForRow:2 inSection:0],
-								nil];
+	[_objFormItemArray insertObject:objItem atIndex:intIndexPosition];
 
 	if (_blnMakeAllLabelsShortFlag) [objItem setShortLabelFlag:true];
 	
-	[[self tableView] beginUpdates];
-	[[self tableView] insertRowsAtIndexPaths:arrInsertPaths withRowAnimation:UITableViewRowAnimationRight];
-	[[self tableView] endUpdates];
-	
+	// Add the indexpath
+	[_objAdditionIndexPaths addObject:[NSIndexPath indexPathForRow:intIndexPosition inSection:0]];
 	return objItem;
+}
+
+- (void)removeFormItem:(QSFormItem *)objItem {
+	NSAssert(_blnAnimateUpdateFlag == true, @"Cannot addFormItem with animation when beginAnimatedUpdates() was never called");
+	NSAssert(_blnNoMoreDeletesFlag == false, @"Cannot removeFormItem() once addFormItem() is called within an animation block");
+	
+	// Figure out the IndexPosition
+	int intIndexPosition = -1;
+	for (int intIndex = 0; intIndex < [_objFormItemArray count]; intIndex++) {
+		if ([_objFormItemArray objectAtIndex:intIndex] == objItem) {
+			intIndexPosition = intIndex;
+		}
+	}
+
+	NSAssert1(intIndexPosition >= 0, @"Cannot find form item with key: %@", [objItem key]);
+	
+	// Remove the Item Itself
+	[_objFormItemArray removeObjectAtIndex:intIndexPosition];
+	
+	// Add the IndexPath to the Removal List
+	[_objDeleteIndexPaths addObject:[NSIndexPath indexPathForRow:intIndexPosition inSection:0]];
 }
 
 - (QSFormItem *)getFormItemWithKey:(NSString *)strKey {
@@ -171,6 +245,9 @@
 		[objFormItem setForm:nil];
 	}
 	
+	[_objAdditionIndexPaths release];
+	[_objDeleteIndexPaths release];
+
 	[_objFormItemArray release];
     [super dealloc];
 }

@@ -171,7 +171,9 @@
 }
 
 - (CGFloat)getHeight {
-	return [self refreshImageView];
+	CGFloat fltToReturn = [self refreshImageView];
+	if (_blnHiddenFlag) return 0;
+	return fltToReturn;
 }
 
 - (bool)tableViewCellTapped:(UITableViewCell *)objCell {

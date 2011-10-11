@@ -42,7 +42,11 @@
 
 	bool _blnSuspendScrollRestoreFlag;
 	id _objDelegate;
-	
+
+	bool _blnAnimateUpdateFlag;
+	bool _blnNoMoreDeletesFlag;
+	NSMutableArray * _objAdditionIndexPaths;
+	NSMutableArray * _objDeleteIndexPaths;
 }
 
 @property (nonatomic, assign /* bind only */, getter=delegate, setter=setDelegate) id _objDelegate;
@@ -54,7 +58,12 @@
 
 - (QSFormViewController *)initAtTop:(NSInteger)intTop NavigatedViewController:(UIViewController *)objNavigatedViewController;
 - (QSFormItem *)addFormItem:(QSFormItem *)objItem;
-- (QSFormItem *)addFormItem:(QSFormItem *)objItem afterFormItemKey:(NSString *)strKey animated:(bool)blnAnimated;
+
+- (void)beginAnimatedUpdates;
+- (void)endAnimatedUpdatesWithAddItemAnimation:(UITableViewRowAnimation)intAddItemAnimation withRemoveItemAnimation:(UITableViewRowAnimation)intRemoveItemAnimation;
+- (QSFormItem *)addFormItem:(QSFormItem *)objItem afterFormItemKey:(NSString *)strKey;
+- (void)removeFormItem:(QSFormItem *)objItem;
+
 - (QSFormItem *)getFormItemWithKey:(NSString *)strKey;
 - (QSFormItem *)getFormItemAtIndex:(NSInteger)intIndex;
 - (NSArray *)getFormItems;
