@@ -54,6 +54,7 @@
 
 - (QSFormViewController *)initAtTop:(NSInteger)intTop NavigatedViewController:(UIViewController *)objNavigatedViewController;
 - (QSFormItem *)addFormItem:(QSFormItem *)objItem;
+- (QSFormItem *)addFormItem:(QSFormItem *)objItem afterFormItemKey:(NSString *)strKey animated:(bool)blnAnimated;
 - (QSFormItem *)getFormItemWithKey:(NSString *)strKey;
 - (QSFormItem *)getFormItemAtIndex:(NSInteger)intIndex;
 - (NSArray *)getFormItems;

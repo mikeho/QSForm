@@ -61,6 +61,24 @@
 	return objItem;
 }
 
+- (QSFormItem *)addFormItem:(QSFormItem *)objItem afterFormItemKey:(NSString *)strKey animated:(bool)blnAnimated {
+	[objItem setIndex:([_objFormItemArray count] + 1000)];
+	[objItem setForm:self];
+	[_objFormItemArray insertObject:objItem atIndex:2];
+	
+	NSArray * arrInsertPaths = [NSArray arrayWithObjects:
+								[NSIndexPath indexPathForRow:2 inSection:0],
+								nil];
+
+	if (_blnMakeAllLabelsShortFlag) [objItem setShortLabelFlag:true];
+	
+	[[self tableView] beginUpdates];
+	[[self tableView] insertRowsAtIndexPaths:arrInsertPaths withRowAnimation:UITableViewRowAnimationRight];
+	[[self tableView] endUpdates];
+	
+	return objItem;
+}
+
 - (QSFormItem *)getFormItemWithKey:(NSString *)strKey {
 	for (QSFormItem * objItem in _objFormItemArray) {
 		if ([[objItem key] isEqualToString:strKey])
