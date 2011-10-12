@@ -284,6 +284,10 @@
 		_blnSelectedArray = [[NSMutableArray alloc] init];
 }
 
+- (NSString *)otherValueString {
+	return _strOtherValue;
+}
+
 #pragma mark -
 #pragma mark List Selector TableViewController Management
 

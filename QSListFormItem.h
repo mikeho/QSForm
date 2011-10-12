@@ -71,6 +71,8 @@
 - (NSArray *)multipleValueArray;
 - (void)removeAllItems;
 
+- (NSString *)otherValueString;
+
 - (IBAction)backClick:(id)sender;
 - (IBAction)textFieldDone:(id)sender;
 @end
