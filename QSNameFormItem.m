@@ -62,6 +62,7 @@
 	[_arrNameArrayByLetter release];
 	[_arrIdArrayByLetter release];
 	[_objTableViewController release];
+	[_objTableHeaderView release];
 	[super dealloc];
 }
 
@@ -173,6 +174,9 @@
 	
 	// Update our name value if it is what is selected
 	if (idValue == _intIdValue) {
+		if (_strNameValue != nil) {
+			[_strNameValue release];
+		}
 		_strNameValue = [[NSString stringWithFormat:@"%@ %@", strFirstName, strLastName] retain];
 	}
 }

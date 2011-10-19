@@ -167,7 +167,9 @@ static bool _TextFieldFormItem_blnIsCleaningUpFlag;
 	[_lblField setFrame:objFrame];
 	[QSLabels trimFrameHeightForLabel:_lblField];
 
-	if (_blnDisplayMultiLineFlag) {
+	if (_blnHiddenFlag) {
+		return 0;
+	} else if (_blnDisplayMultiLineFlag) {
 		return MAX([super getHeight], _lblField.frame.size.height + kTopMargin*2);
 	} else {
 		return [super getHeight];
