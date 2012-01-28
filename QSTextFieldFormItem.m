@@ -100,22 +100,28 @@ static bool _TextFieldFormItem_blnIsCleaningUpFlag;
 	// Swap Displays
 	[_lblField setHidden:true];
 	[_txtField setHidden:false];
+	
+	// Perform Delegates (if applicable)
+	if (([_objForm delegate] != nil) && ([[_objForm delegate] respondsToSelector:@selector(form:didSelectFormItem:)])) {
+		[[_objForm delegate] form:_objForm didSelectFormItem:self];
+	}
 }
 
 - (IBAction)textFieldDone:(id)sender {
+	_blnChangedFlag = true;
+
+	NSString * strTextFieldText = ((UITextField *)sender).text;
+	if (strTextFieldText)
+		[self setValue:[NSString stringWithString:strTextFieldText]];
+	else
+		[self setValue:@""];
+
 	if ([_objForm selectedIndexPath] &&
 		([_objForm selectedIndexPath].row == _objIndexPath.row)) {
-		_blnChangedFlag = true;
 		[_objForm setSelectedIndexPath:nil];
 		
-		NSString * strTextFieldText = ((UITextField *)sender).text;
-		if (strTextFieldText)
-			[self setValue:[NSString stringWithString:strTextFieldText]];
-		else
-			[self setValue:@""];
-		
 		[self keyboardWillHide:self];
-		
+
 		if (_blnDisplayMultiLineFlag) [_objForm redraw];
 	}
 }
@@ -152,6 +158,7 @@ static bool _TextFieldFormItem_blnIsCleaningUpFlag;
 	_txtField.autocorrectionType = _intAutocorrectionType;
 	_txtField.autocapitalizationType = _intAutocapitalizationType;
 	_txtField.keyboardType = _intKeyboardType;
+	_txtField.enabled = _blnEnabledFlag;
 
 	// Update UILabel Properties (including Height)
 	[_lblField setText:_strValue];
@@ -160,7 +167,9 @@ static bool _TextFieldFormItem_blnIsCleaningUpFlag;
 	[_lblField setFrame:objFrame];
 	[QSLabels trimFrameHeightForLabel:_lblField];
 
-	if (_blnDisplayMultiLineFlag) {
+	if (_blnHiddenFlag) {
+		return 0;
+	} else if (_blnDisplayMultiLineFlag) {
 		return MAX([super getHeight], _lblField.frame.size.height + kTopMargin*2);
 	} else {
 		return [super getHeight];

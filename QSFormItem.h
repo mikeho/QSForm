@@ -40,6 +40,7 @@
 	bool _blnChangedFlag;
 	QSFormViewController * _objForm;
 	bool _blnHiddenFlag;
+	bool _blnEnabledFlag;
 
 	NSString * _strSubscreenPrompt;
 
@@ -71,5 +72,6 @@
 @property (nonatomic, assign, getter=changedFlag) bool _blnChangedFlag;
 @property (nonatomic, assign, getter=hiddenFlag, setter=setHiddenFlag) bool _blnHiddenFlag;
 @property (nonatomic, retain, getter=itemBackgroundColor, setter=setItemBackgroundColor) UIColor * _objItemBackgroundColor;
+@property (nonatomic, assign, getter=enabledFlag, setter=setEnabledFlag) bool _blnEnabledFlag;
 
 @end

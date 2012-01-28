@@ -171,7 +171,9 @@
 }
 
 - (CGFloat)getHeight {
-	return [self refreshImageView];
+	CGFloat fltToReturn = [self refreshImageView];
+	if (_blnHiddenFlag) return 0;
+	return fltToReturn;
 }
 
 - (bool)tableViewCellTapped:(UITableViewCell *)objCell {
@@ -280,6 +282,10 @@
 	_strValueArray = [[NSMutableArray alloc] init];
 	if (_blnMultipleSelectFlag)
 		_blnSelectedArray = [[NSMutableArray alloc] init];
+}
+
+- (NSString *)otherValueString {
+	return _strOtherValue;
 }
 
 #pragma mark -
