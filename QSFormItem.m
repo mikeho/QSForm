@@ -71,6 +71,7 @@
 			lblLabel.textAlignment = UITextAlignmentRight;
 			lblLabel.tag = kDefaultLabelTag;
 			lblLabel.textColor = [UIColor colorWithRed:0.4 green:0.4 blue:0.6 alpha:1.0];
+			lblLabel.backgroundColor = [UIColor clearColor];
 			lblLabel.font = [UIFont boldSystemFontOfSize:11];
 			lblLabel.text = _strLabel;
 			[objCell.contentView addSubview:lblLabel];
@@ -104,6 +105,7 @@
 	lblLabel.textAlignment = UITextAlignmentRight;
 	lblLabel.tag = kDefaultLabelTag;
 	lblLabel.textColor = [UIColor colorWithRed:0.4 green:0.4 blue:0.6 alpha:1.0];
+	lblLabel.backgroundColor = [UIColor clearColor];
 	lblLabel.font = [UIFont boldSystemFontOfSize:11];
 	lblLabel.text = _strLabel;
 	[QSLabels trimFrameHeightForLabel:lblLabel WithMinHeight:25];
