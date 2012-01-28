@@ -32,6 +32,7 @@
 
 	NSString * _strKey;
 	NSString * _strLabel;
+	UIColor * _objItemBackgroundColor;
 
 	bool _blnShortLabelFlag;
 
@@ -69,5 +70,6 @@
 @property (nonatomic, retain, getter=subscreenPrompt, setter=setSubscreenPrompt) NSString * _strSubscreenPrompt;
 @property (nonatomic, assign, getter=changedFlag) bool _blnChangedFlag;
 @property (nonatomic, assign, getter=hiddenFlag, setter=setHiddenFlag) bool _blnHiddenFlag;
+@property (nonatomic, retain, getter=itemBackgroundColor, setter=setItemBackgroundColor) UIColor * _objItemBackgroundColor;
 
 @end

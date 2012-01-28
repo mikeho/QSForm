@@ -37,6 +37,7 @@
 @synthesize _strSubscreenPrompt;
 @synthesize _blnChangedFlag;
 @synthesize _blnHiddenFlag;
+@synthesize _objItemBackgroundColor;
 
 - (QSFormItem *)initWithKey:(NSString *)strKey Label:(NSString *)strLabel {
 	if (self = [super init]) {
@@ -82,6 +83,11 @@
 			[QSLabels trimFrameHeightForLabel:lblLabel WithMinHeight:25];
 		}
 	}
+
+	if (_objItemBackgroundColor == nil)
+		[objCell setBackgroundColor:[UIColor whiteColor]];
+	else
+		[objCell setBackgroundColor:_objItemBackgroundColor];
 
 	[objCell setHidden:_blnHiddenFlag];
 	return objCell;
@@ -156,6 +162,7 @@
 	[_strLabel release];
 	[_strSubscreenPrompt release];
 	[_objIndexPath release];
+	[_objItemBackgroundColor release];
 	[super dealloc];
 }
 
