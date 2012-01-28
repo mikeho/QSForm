@@ -71,6 +71,7 @@
 	if (_lblTapHere == nil) {
 		_lblTapHere = [[UILabel alloc] initWithFrame:[self getControlFrameWithHeight:25]];
 		[_lblTapHere setText:@"Tap to Access Camera"];
+		[_lblTapHere setBackgroundColor:[UIColor clearColor]];
 		[_lblTapHere setTextColor:[UIColor grayColor]];
 		[_lblTapHere setFont:[UIFont italicSystemFontOfSize:[UIFont systemFontSize]]];
 	}
