@@ -81,6 +81,9 @@
 	// Add the picker
 	_objPicker = [[UIDatePicker alloc] init];
 	[_objPicker setDatePickerMode:UIDatePickerModeDateAndTime];
+	if (!_blnTimeFlag) {
+		[_objPicker setDatePickerMode:UIDatePickerModeDate];
+	}
 
 	if (_dttValue == nil)
 		[_objPicker setDate:[NSDate date]];
@@ -102,6 +105,7 @@
 - (void)actionSheet:(UIActionSheet *)actionSheet willDismissWithButtonIndex:(NSInteger)buttonIndex {
 	if (buttonIndex == 0) {
 		[self setValue:[_objPicker date]];
+		_blnChangedFlag = true;
 		[_objForm redraw];
 	}
 	
