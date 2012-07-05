@@ -72,45 +72,68 @@
 }
 
 - (bool)tableViewCellTapped:(UITableViewCell *)objCell {
-	UIActionSheet * objSheet = [[UIActionSheet alloc] initWithTitle:[NSString stringWithFormat:@"%@\n\n\n\n\n\n\n\n\n\n\n\n\n\n", _strLabel]
-														   delegate:self
-												  cancelButtonTitle:@"Cancel"
-											 destructiveButtonTitle:nil
-												  otherButtonTitles:@"OK", nil];
-
-	// Add the picker
-	_objPicker = [[UIDatePicker alloc] init];
+	// Set up the New ViewController
+	_objViewController = [[UIViewController alloc] init];
+	[[[_objForm navigatedViewController] navigationController] pushViewController:_objViewController animated:true];
+	[[_objViewController navigationItem] setTitle:_strLabel];
+	
+	// Set up the Date Picker
+	_objPicker = [[UIDatePicker alloc] initWithFrame:CGRectMake(0, 0, [UIScreen mainScreen].bounds.size.width, [UIScreen mainScreen].bounds.size.height)];
 	[_objPicker setDatePickerMode:UIDatePickerModeDateAndTime];
 	if (!_blnTimeFlag) {
 		[_objPicker setDatePickerMode:UIDatePickerModeDate];
 	}
-
+	
 	if (_dttValue == nil)
 		[_objPicker setDate:[NSDate date]];
 	else
 		[_objPicker setDate:_dttValue];
 	
-	CGRect objRect = [_objPicker frame];
-	objRect.origin.y += 40;
-	[_objPicker setFrame:objRect];
+	[[_objViewController view] addSubview:_objPicker];
+	
+	UIBarButtonItem * btnSave = [[UIBarButtonItem alloc] initWithTitle:@"Save"
+																 style:UIBarButtonItemStyleDone
+																target:self
+																action:@selector(saveTapped:)];
+	UIBarButtonItem * btnClear = [[UIBarButtonItem alloc] initWithTitle:@"Clear"
+																  style:UIBarButtonItemStyleBordered
+																 target:self
+																 action:@selector(clearTapped:)]; 
 
-	[objSheet addSubview:_objPicker];
-
-	[objSheet showInView:[_objForm view]];
-	[objSheet release];
+	[[_objViewController navigationItem] setLeftBarButtonItem:btnSave];
+	[[_objViewController navigationItem] setRightBarButtonItem:btnClear];
+	[btnSave release];
+	[btnClear release];
 
 	return false;
 }
 
-- (void)actionSheet:(UIActionSheet *)actionSheet willDismissWithButtonIndex:(NSInteger)buttonIndex {
-	if (buttonIndex == 0) {
-		[self setValue:[_objPicker date]];
-		_blnChangedFlag = true;
-		[_objForm redraw];
-	}
+- (void)saveTapped:(id)sender {
+	[self setValue:[_objPicker date]];
+	_blnChangedFlag = true;
+	[_objForm redraw];
 	
+	// Cleanup
 	[_objPicker release];
 	_objPicker = nil;
+
+	[[_objViewController navigationController] popViewControllerAnimated:true];
+	[_objViewController release];
+	_objViewController = nil;
+}
+
+- (void)clearTapped:(id)sender {
+	[self setValue:nil];
+	_blnChangedFlag = true;
+	[_objForm redraw];
+	
+	// Cleanup
+	[_objPicker release];
+	_objPicker = nil;
+	
+	[[_objViewController navigationController] popViewControllerAnimated:true];
+	[_objViewController release];
+	_objViewController = nil;	
 }
 
 - (void)dealloc {
@@ -118,6 +141,8 @@
 	[self setDateTimeFormat:nil];
 	[_objPicker release];
 	_objPicker = nil;
+	[_objViewController release];
+	_objViewController = nil;
 	[super dealloc];
 }
 

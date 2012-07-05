@@ -26,11 +26,12 @@
 #import <Foundation/Foundation.h>
 #import "QSFormItem.h"
 
-@interface QSDateTimeFormItem : QSFormItem <UIActionSheetDelegate> {
+@interface QSDateTimeFormItem : QSFormItem {
 	NSDate * _dttValue;
 	NSString * _strDateTimeFormat;
 	bool _blnTimeFlag;
 	
+	UIViewController * _objViewController;
 	UIDatePicker * _objPicker;
 }
 
@@ -39,4 +40,8 @@
 @property (nonatomic, retain, getter=dateTimeFormat, setter=setDateTimeFormat) NSString * _strDateTimeFormat;
 
 - (QSDateTimeFormItem *)initWithKey:(NSString *)strKey Label:(NSString *)strLabel Value:(NSDate *)dttValue;
+
+- (void)saveTapped:(id)sender;
+- (void)clearTapped:(id)sender;
+
 @end
