@@ -39,8 +39,8 @@
 	UILabel * _lblField;
 }
 
-@property (nonatomic, assign, getter=idValue, setter=idValue) int _intIdValue;
-@property (nonatomic, retain, getter=tableHeaderView, setter=setTableHeaderView) UIView * _objTableHeaderView;
+@property (nonatomic, assign, getter=idValue, setter=idValue:) int _intIdValue;
+@property (nonatomic, retain, getter=tableHeaderView, setter=setTableHeaderView:) UIView * _objTableHeaderView;
 
 - (QSNameFormItem *)initWithKey:(NSString *)strKey Label:(NSString *)strLabel IdValue:(int)intIdValue;
 

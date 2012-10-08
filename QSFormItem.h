@@ -62,16 +62,16 @@
 - (bool)tableViewCellTapped:(UITableViewCell *)objCell;
 - (void)tableViewCellUnselect:(UITableViewCell *)objCell;
 
-@property (nonatomic, assign, getter=index, setter=setIndex) NSInteger _intIndex;
-@property (nonatomic, retain, getter=indexPath, setter=setIndexPath) NSIndexPath * _objIndexPath;
-@property (nonatomic, retain, getter=key, setter=setKey) NSString * _strKey;
-@property (nonatomic, retain, getter=label, setter=setLabel) NSString * _strLabel;
-@property (nonatomic, assign /* weakref */, getter=form, setter=setForm) QSFormViewController * _objForm;
-@property (nonatomic, assign, getter=shortLabelFlag, setter=setShortLabelFlag) bool _blnShortLabelFlag;
-@property (nonatomic, retain, getter=subscreenPrompt, setter=setSubscreenPrompt) NSString * _strSubscreenPrompt;
+@property (nonatomic, assign, getter=index, setter=setIndex:) NSInteger _intIndex;
+@property (nonatomic, retain, getter=indexPath, setter=setIndexPath:) NSIndexPath * _objIndexPath;
+@property (nonatomic, retain, getter=key, setter=setKey:) NSString * _strKey;
+@property (nonatomic, retain, getter=label, setter=setLabel:) NSString * _strLabel;
+@property (nonatomic, assign /* weakref */, getter=form, setter=setForm:) QSFormViewController * _objForm;
+@property (nonatomic, assign, getter=shortLabelFlag, setter=setShortLabelFlag:) bool _blnShortLabelFlag;
+@property (nonatomic, retain, getter=subscreenPrompt, setter=setSubscreenPrompt:) NSString * _strSubscreenPrompt;
 @property (nonatomic, assign, getter=changedFlag) bool _blnChangedFlag;
-@property (nonatomic, assign, getter=hiddenFlag, setter=setHiddenFlag) bool _blnHiddenFlag;
-@property (nonatomic, retain, getter=itemBackgroundColor, setter=setItemBackgroundColor) UIColor * _objItemBackgroundColor;
-@property (nonatomic, assign, getter=enabledFlag, setter=setEnabledFlag) bool _blnEnabledFlag;
+@property (nonatomic, assign, getter=hiddenFlag, setter=setHiddenFlag:) bool _blnHiddenFlag;
+@property (nonatomic, retain, getter=itemBackgroundColor, setter=setItemBackgroundColor:) UIColor * _objItemBackgroundColor;
+@property (nonatomic, assign, getter=enabledFlag, setter=setEnabledFlag:) bool _blnEnabledFlag;
 
 @end

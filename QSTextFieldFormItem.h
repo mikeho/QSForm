@@ -38,12 +38,12 @@
 	UILabel * _lblField;
 }
 
-@property (nonatomic, retain, getter=value, setter=setValue) NSString * _strValue;
-@property (nonatomic, assign, getter=passwordFlag, setter=setPasswordFlag) bool _blnPasswordFlag;
-@property (nonatomic, assign, getter=displayMultiLineFlag, setter=setDisplayMultiLineFlag) bool _blnDisplayMultiLineFlag;
-@property (nonatomic, assign, getter=autocorrectionType, setter=setAutocorrectionType) UITextAutocorrectionType _intAutocorrectionType;
-@property (nonatomic, assign, getter=autocapitalizationType, setter=setAutocapitalizationType) UITextAutocapitalizationType _intAutocapitalizationType;
-@property (nonatomic, assign, getter=keyboardType, setter=setKeyboardType) UIKeyboardType _intKeyboardType;
+@property (nonatomic, retain, getter=value, setter=setValue:) NSString * _strValue;
+@property (nonatomic, assign, getter=passwordFlag, setter=setPasswordFlag:) bool _blnPasswordFlag;
+@property (nonatomic, assign, getter=displayMultiLineFlag, setter=setDisplayMultiLineFlag:) bool _blnDisplayMultiLineFlag;
+@property (nonatomic, assign, getter=autocorrectionType, setter=setAutocorrectionType:) UITextAutocorrectionType _intAutocorrectionType;
+@property (nonatomic, assign, getter=autocapitalizationType, setter=setAutocapitalizationType:) UITextAutocapitalizationType _intAutocapitalizationType;
+@property (nonatomic, assign, getter=keyboardType, setter=setKeyboardType:) UIKeyboardType _intKeyboardType;
 
 - (QSTextFieldFormItem *)initWithKey:(NSString *)strKey Label:(NSString *)strLabel Value:(NSString *)strValue;
 - (IBAction)textFieldDone:(id)sender;
