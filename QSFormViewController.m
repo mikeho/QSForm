@@ -46,7 +46,11 @@
 
 		_objNavigatedViewController = objNavigatedViewController;
 		[[_objNavigatedViewController view] addSubview:[self view]];
-		[[self view] setBackgroundColor:[UIColor clearColor]];
+
+		UIView * objBackgroundView = [[UIView alloc] init];
+		[objBackgroundView setBackgroundColor:[UIColor groupTableViewBackgroundColor]];
+		[[self tableView] setBackgroundView:objBackgroundView];
+		[objBackgroundView release];
 	}
 	return self;
 }
