@@ -51,5 +51,6 @@
 #define kLabelTopMargin 10
 #define kLabelBottomMargin 5
 #define kLabelSideMargin 10
+#define kMainLabelColor [UIColor colorWithRed:0.75f green:0.75f blue:1.0f alpha:1.0f]
 
 #endif __QSFORM_INCLUDE__
