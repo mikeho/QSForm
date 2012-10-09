@@ -38,6 +38,7 @@
 #import "QSSectionHeaderFormItem.h"
 #import "QSImageCaptureFormItem.h"
 #import "QSDateTimeFormItem.h"
+#import "QSForm_UIColor.h"
 
 // No longer being mainted or in use
 // So leaving it out for now
@@ -51,6 +52,5 @@
 #define kLabelTopMargin 10
 #define kLabelBottomMargin 5
 #define kLabelSideMargin 10
-#define kMainLabelColor [UIColor colorWithRed:0.75f green:0.75f blue:1.0f alpha:1.0f]
 
 #endif __QSFORM_INCLUDE__

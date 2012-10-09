@@ -23,7 +23,6 @@
  * THE SOFTWARE.
  */
 
-
 #import "QSForm.h"
 #import "QSControls.h"
 
@@ -279,7 +278,7 @@
 	// The actual header view is a Label
 	UILabel * lblHeader = [[UILabel alloc] initWithFrame:CGRectMake(10, 0, 300, 30)];
 	[lblHeader setBackgroundColor:[UIColor clearColor]];
-	[lblHeader setTextColor:kMainLabelColor];
+	[lblHeader setTextColor:[UIColor colorWithRed:0.4 green:0.4 blue:0.6 alpha:1.0]];
 	[lblHeader setFont:[UIFont boldSystemFontOfSize:16]];
 
 	[lblHeader setText:_strHeaderText];
