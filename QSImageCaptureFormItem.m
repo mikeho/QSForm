@@ -118,6 +118,7 @@
 
 	[objImagePicker setDelegate:self];
 	[objImagePicker setAllowsEditing:false];
+
 	
 	if ([UIImagePickerController isSourceTypeAvailable: UIImagePickerControllerSourceTypeCamera]) {
 		// Has camera
@@ -134,12 +135,12 @@
 
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info {
 	[self setImage:(UIImage *)[info objectForKey:UIImagePickerControllerOriginalImage]];
-    [[picker parentViewController] dismissModalViewControllerAnimated:true];
+    [picker dismissModalViewControllerAnimated:true];
 	if (_objOnChangeTarget) [_objOnChangeTarget performSelector:_objOnChangeAction withObject:self];
 }
 
 - (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker {
-    [[picker parentViewController] dismissModalViewControllerAnimated:true];
+    [picker dismissModalViewControllerAnimated:true];
 }
 
 - (void)dealloc {
