@@ -313,17 +313,8 @@
     if (objCell == nil) {
 		objCell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:strIdentifier] autorelease];
 	}
-	
-	[[objCell textLabel] setTextColor:[UIColor blackColor]];
+
 	[[objCell textLabel] setBackgroundColor:[UIColor clearColor]];
-	// Set background color (if applicable)
-	if (_objBackgroundColor != nil) {
-		if (([indexPath row] % 2) && _objAlternateBackgroundColor) {
-			[[objCell contentView] setBackgroundColor:_objAlternateBackgroundColor];
-		} else {
-			[[objCell contentView] setBackgroundColor:_objBackgroundColor];
-		}
-	}
 
 	if (_blnDisplayMultiLineFlag) {
 		[[objCell textLabel] setLineBreakMode:UILineBreakModeWordWrap];
@@ -348,10 +339,28 @@
 			[[objCell textLabel] setText:@"Other..."];
 			[[objCell textLabel] setTextColor:[UIColor grayColor]];
 			[[objCell textLabel] setFont:[UIFont boldSystemFontOfSize:[UIFont labelFontSize]]];
-			[tableView deselectRowAtIndexPath:indexPath animated:false];
+            
+            if (_blnMultipleSelectFlag) {
+                // Set background color (if applicable)
+                if (_objBackgroundColor != nil) {
+                    if (([indexPath row] % 2) && _objAlternateBackgroundColor) {
+                        [[objCell contentView] setBackgroundColor:_objAlternateBackgroundColor];
+                    } else {
+                        [[objCell contentView] setBackgroundColor:_objBackgroundColor];
+                    }
+                }
+            } else {
+                [tableView deselectRowAtIndexPath:indexPath animated:false];
+            }
 		} else {
 			[[objCell textLabel] setText:strOtherText];
-			[tableView selectRowAtIndexPath:indexPath animated:false scrollPosition:UITableViewScrollPositionNone];
+            
+            if (_blnMultipleSelectFlag) {
+                [[objCell textLabel] setTextColor:[UIColor whiteColor]];
+                [[objCell contentView] setBackgroundColor:[UIColor colorWithRed:0.0f green:0.35f blue:.90f alpha:1.0f]];
+            } else {
+                [tableView selectRowAtIndexPath:indexPath animated:false scrollPosition:UITableViewScrollPositionNone];
+            }
 		}
 	} else {
 		[[objCell textLabel] setText:[_strNameArray objectAtIndex:[indexPath row]]];
@@ -380,15 +389,33 @@
 			[objCell setNeedsLayout];
 			[objCell setNeedsDisplay];
 		}
-		
+        
 		if (_blnMultipleSelectFlag) {
 			if ([(NSNumber *)[_blnSelectedArray objectAtIndex:[indexPath row]] boolValue]) {
-				[tableView selectRowAtIndexPath:indexPath animated:false scrollPosition:UITableViewScrollPositionNone];
+                [[objCell textLabel] setTextColor:[UIColor whiteColor]];
+                [[objCell contentView] setBackgroundColor:[UIColor colorWithRed:0.0f green:0.35f blue:.90f alpha:1.0f]];
 			} else {
-				[tableView deselectRowAtIndexPath:indexPath animated:false];
+                [[objCell textLabel] setTextColor:[UIColor blackColor]];
+                // Set background color (if applicable)
+                if (_objBackgroundColor != nil) {
+                    if (([indexPath row] % 2) && _objAlternateBackgroundColor) {
+                        [[objCell contentView] setBackgroundColor:_objAlternateBackgroundColor];
+                    } else {
+                        [[objCell contentView] setBackgroundColor:_objBackgroundColor];
+                    }
+                }
 			}
-			
 		} else {
+            [[objCell textLabel] setTextColor:[UIColor blackColor]];
+            // Set background color (if applicable)
+            if (_objBackgroundColor != nil) {
+                if (([indexPath row] % 2) && _objAlternateBackgroundColor) {
+                    [[objCell contentView] setBackgroundColor:_objAlternateBackgroundColor];
+                } else {
+                    [[objCell contentView] setBackgroundColor:_objBackgroundColor];
+                }
+            }
+
 			if ([_strSingleValue isEqualToString:[_strValueArray objectAtIndex:[indexPath row]]]) {
 				[tableView selectRowAtIndexPath:indexPath animated:false scrollPosition:UITableViewScrollPositionNone];
 			} else {
