@@ -311,7 +311,7 @@
 	UITableViewCell * objCell = [[_objTableViewController tableView] dequeueReusableCellWithIdentifier:strIdentifier];
 
     if (objCell == nil) {
-		objCell = [[[UITableViewCell alloc] initWithFrame:CGRectZero reuseIdentifier:strIdentifier] autorelease];
+		objCell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:strIdentifier] autorelease];
 	}
 	
 	[[objCell textLabel] setTextColor:[UIColor blackColor]];

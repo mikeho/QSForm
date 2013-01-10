@@ -60,7 +60,7 @@
 	// Create a New Cell (if none was dequeued)
     if (objCell == nil) {
 		_blnCreatedFlag = true;
-		objCell = [[UITableViewCell alloc] initWithFrame:CGRectZero reuseIdentifier:strIdentifier];
+        objCell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:strIdentifier];
 		[objCell autorelease];
 		
 		// Create the Label (if applicable)
