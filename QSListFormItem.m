@@ -79,6 +79,10 @@
 	return self;
 }
 
+- (bool)getMultipleSelectFlag {
+    return _blnMultipleSelectFlag;
+}
+
 #pragma mark -
 #pragma mark Memory Management
 

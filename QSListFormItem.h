@@ -75,4 +75,6 @@
 
 - (IBAction)backClick:(id)sender;
 - (IBAction)textFieldDone:(id)sender;
+
+- (bool)getMultipleSelectFlag;
 @end

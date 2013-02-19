@@ -110,6 +110,7 @@
 }
 
 - (CGFloat)getHeight {
+    if (_blnHiddenFlag) return 0;
 	return [self refreshImageView];
 }
 

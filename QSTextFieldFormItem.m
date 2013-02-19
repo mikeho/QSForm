@@ -124,6 +124,8 @@ static bool _TextFieldFormItem_blnIsCleaningUpFlag;
 
 		if (_blnDisplayMultiLineFlag) [_objForm redraw];
 	}
+    
+	if (_objOnChangeTarget) [_objOnChangeTarget performSelector:_objOnChangeAction withObject:self];
 }
 
 - (CGFloat)getHeight {
