@@ -110,8 +110,9 @@
 }
 
 - (CGFloat)getHeight {
+    CGFloat fltParentHeight = [super getHeight];
     if (_blnHiddenFlag) return 0;
-	return [self refreshImageView];
+	return MAX([self refreshImageView], fltParentHeight);
 }
 
 - (bool)tableViewCellTapped:(UITableViewCell *)objCell {	
