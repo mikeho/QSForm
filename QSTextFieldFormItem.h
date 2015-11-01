@@ -33,6 +33,7 @@
 	UITextAutocorrectionType _intAutocorrectionType;
 	UITextAutocapitalizationType _intAutocapitalizationType;
 	UIKeyboardType _intKeyboardType;
+    bool _activeField;
 	
 	UITextField * _txtField;
 	UILabel * _lblField;
@@ -44,6 +45,7 @@
 @property (nonatomic, assign, getter=autocorrectionType, setter=setAutocorrectionType:) UITextAutocorrectionType _intAutocorrectionType;
 @property (nonatomic, assign, getter=autocapitalizationType, setter=setAutocapitalizationType:) UITextAutocapitalizationType _intAutocapitalizationType;
 @property (nonatomic, assign, getter=keyboardType, setter=setKeyboardType:) UIKeyboardType _intKeyboardType;
+@property (nonatomic, assign, getter=activeField, setter=setActiveField:) bool _activeField;
 
 - (QSTextFieldFormItem *)initWithKey:(NSString *)strKey Label:(NSString *)strLabel Value:(NSString *)strValue;
 - (IBAction)textFieldDone:(id)sender;
@@ -53,4 +55,7 @@
 - (void)resetScrollingStep1;
 - (void)resetScrollingStep2;
 - (void)keyboardWillShow:(id)sender;
+
+- (void)keyboardWillShowNotification:(NSNotification *)notification;
+- (void)keyboardWillHideNotification:(NSNotification *)notification;
 @end

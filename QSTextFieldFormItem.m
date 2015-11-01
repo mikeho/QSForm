@@ -42,6 +42,7 @@ static bool _TextFieldFormItem_blnIsCleaningUpFlag;
 @synthesize _intAutocorrectionType;
 @synthesize _intAutocapitalizationType;
 @synthesize _intKeyboardType;
+@synthesize _activeField;
 
 
 
@@ -54,7 +55,21 @@ static bool _TextFieldFormItem_blnIsCleaningUpFlag;
 		_intAutocorrectionType = UITextAutocorrectionTypeDefault;
 		_intAutocapitalizationType = UITextAutocapitalizationTypeSentences;
 		_intKeyboardType = UIKeyboardTypeDefault;
-	}
+    }
+    
+    _activeField = false;
+    
+    // Register the notification for when the keyboard will be shown
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(keyboardWillShowNotification:)
+                                                 name:UIKeyboardWillShowNotification
+                                               object:nil];
+    
+    // Register the notification for when the keyboard will be hidden
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(keyboardWillHideNotification:)
+                                                 name:UIKeyboardWillShowNotification
+                                               object:nil];
 	return self;
 }
 
@@ -94,8 +109,14 @@ static bool _TextFieldFormItem_blnIsCleaningUpFlag;
 }
 
 - (IBAction)textFieldStart:(id)sender {
-	[_objForm setSelectedIndexPath:_objIndexPath];
-	[self keyboardWillShow:self];
+    _activeField = true;
+    [_objForm setSelectedIndexPath:_objIndexPath];
+    
+    // Only do this for the iOS6 versions.  iOS7+ uses the keyboard notifications instead.
+    NSString *currSysVer = [[UIDevice currentDevice] systemVersion];
+    if ([currSysVer hasPrefix:@"6"]) {
+        [self keyboardWillShow:self];
+    }
 	
 	// Swap Displays
 	[_lblField setHidden:true];
@@ -108,6 +129,7 @@ static bool _TextFieldFormItem_blnIsCleaningUpFlag;
 }
 
 - (IBAction)textFieldDone:(id)sender {
+    _activeField = false;
 	_blnChangedFlag = true;
 
 	NSString * strTextFieldText = ((UITextField *)sender).text;
@@ -122,7 +144,17 @@ static bool _TextFieldFormItem_blnIsCleaningUpFlag;
 		
 		[self keyboardWillHide:self];
 
-		if (_blnDisplayMultiLineFlag) [_objForm redraw];
+        if (_blnDisplayMultiLineFlag) {
+            // Instead of reloading the whole table (i.e. [_objForm redraw]), only update the selected row.
+            // Reloading the whole table would resign the first responder causing the table to be redrawn with
+            // no way of handling the user click.  Additionally, this needs to be done async so that the row does
+            // not get deleted (reloading the row does an implicit row delete) while the UIControlEventEditingDidEnd
+            // event is still running -- see the addition of the text field in getHeight for where the target is set up.
+            dispatch_async(dispatch_get_main_queue(), ^{
+                NSArray *indexPaths = [NSArray arrayWithObject:_objIndexPath];
+                [[_objForm tableView] reloadRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationNone];
+            });
+        }
 	}
     
 	if (_objOnChangeTarget) [_objOnChangeTarget performSelector:_objOnChangeAction withObject:self];
@@ -209,44 +241,122 @@ static bool _TextFieldFormItem_blnIsCleaningUpFlag;
 	_TextFieldFormItem_blnIsCleaningUpFlag = true;
 }
 
+// This function will get called when the keyboard is going to be shown.  The main purpose of this function
+// is to make sure that if the keyboard covers up a selected text field, the view will scroll so that it is
+// visible.
+//   NOTE: This majority of this function will only be used by iOS7 and greater since the contentOffset of scroll views
+//         has changed from iOS6 to iOS7+.
+- (void)keyboardWillShowNotification:(NSNotification *)notification {
+    
+    if (_activeField == false) {
+        return;
+    }
+    
+    // This function will only deal with a system version of iOS7 or greater.  iOS6 versions will
+    // not use this function...Those versions will continue to use the older way of using the
+    // (void)keyboardWillShow:(id)sender method.  This is due to the iOS6 and iOS7 contentOffset for
+    // scrollviews being different.  If a version less than iOS7 is encountered, just return.
+    NSString *reqSysVer = @"7";
+    NSString *currSysVer = [[UIDevice currentDevice] systemVersion];
+    if ([currSysVer compare:reqSysVer options:NSNumericSearch] == NSOrderedAscending) {
+        // we are not iOS7 or higher, just return.
+        return;
+    }
+    
+    if (_objForm.suspendScrollRestoreFlag) {
+        [_objForm setSuspendScrollRestoreFlag:false];
+        return;
+    }
+    
+    UIScrollView * objScrollView = (UIScrollView *)[_objForm.navigatedViewController view];
+    
+    // Are we "already scrolling"?  If not, let's store the current ScrollView data
+    if (!_TextFieldFormItem_blnIsScrollingFlag) {
+        _TextFieldFormItem_objCurrentFrame = [objScrollView frame];
+        _TextFieldFormItem_objCurrentContentSize = [objScrollView contentSize];
+        _TextFieldFormItem_objCurrentContentOffset = [objScrollView contentOffset];
+        _TextFieldFormItem_blnCurrentScrollEnableFlag = [objScrollView isScrollEnabled];
+        _TextFieldFormItem_blnIsScrollingFlag = true;
+    }
+    _TextFieldFormItem_blnIsCleaningUpFlag = false;
+    
+    // Get the height of the keyboard to determine if the keyboard will cover the field we are editing.
+    CGFloat fltKbHeight = [[notification.userInfo valueForKey:UIKeyboardFrameBeginUserInfoKey] CGRectValue].size.height;
+    
+    // Get the y-offset
+    CGFloat fltYOffset = _TextFieldFormItem_objCurrentContentOffset.y;
+    
+    [UIView beginAnimations:@"" context:NULL];
+    
+    [[_objForm.navigatedViewController navigationItem] prompt];
+    
+    // Set the frame and size of the scroll view for when the keyboard appears.
+    [objScrollView setFrame:CGRectMake(_TextFieldFormItem_objCurrentFrame.origin.x,
+                                       _TextFieldFormItem_objCurrentFrame.origin.y,
+                                       [UIScreen mainScreen].bounds.size.width,
+                                       _TextFieldFormItem_objCurrentFrame.size.height - fltKbHeight)];
+    [UIView commitAnimations];
+    [objScrollView setScrollEnabled:true];
+    [objScrollView setContentSize:CGSizeMake([UIScreen mainScreen].bounds.size.width,
+                                             _TextFieldFormItem_objCurrentFrame.size.height + fltYOffset)];
+    
+    // Get the origin point of the selected item check if it is to create the area that should be visible
+    CGPoint ptItemOrigin = [self->_txtField.superview convertPoint:self->_txtField.frame.origin toView:nil];
+    CGFloat fltItemHeight = [[_objForm getFormItemAtIndex:[_objForm.selectedIndexPath row]] getHeight];
+    
+    // Scroll if the item selected is not in the current scrollview frame
+    if (!CGRectContainsPoint(objScrollView.frame, ptItemOrigin) ) {
+        CGRect objRectToScrollTo = CGRectMake(0,
+                                              ptItemOrigin.y + fltYOffset,
+                                              [UIScreen mainScreen].bounds.size.width,
+                                              fltItemHeight);
+    
+        [objScrollView scrollRectToVisible:objRectToScrollTo animated:NO];
+    }
+}
+
+// This method should only be called when running in iOS6.  iOS7+ uses notifications instead.
 - (void)keyboardWillShow:(id)sender {
-	if (_objForm.suspendScrollRestoreFlag) {
-		[_objForm setSuspendScrollRestoreFlag:false];
-		return;
-	}
-	
-	UIScrollView * objScrollView = (UIScrollView *)[_objForm.navigatedViewController view];
+    if (_objForm.suspendScrollRestoreFlag) {
+        [_objForm setSuspendScrollRestoreFlag:false];
+        return;
+    }
+    
+    UIScrollView * objScrollView = (UIScrollView *)[_objForm.navigatedViewController view];
+    
+    CGFloat fltYPosition = [_objForm getYPositionForCellAtIndexPath:_objForm.selectedIndexPath];
+    fltYPosition -= kTopMargin;
+    
+    // Are we "already scrolling"?  If not, let's store the current ScrollView data
+    if (!_TextFieldFormItem_blnIsScrollingFlag) {
+        _TextFieldFormItem_objCurrentFrame = [objScrollView frame];
+        _TextFieldFormItem_objCurrentContentSize = [objScrollView contentSize];
+        _TextFieldFormItem_objCurrentContentOffset = [objScrollView contentOffset];
+        _TextFieldFormItem_blnCurrentScrollEnableFlag = [objScrollView isScrollEnabled];
+        _TextFieldFormItem_blnIsScrollingFlag = true;
+    }
+    _TextFieldFormItem_blnIsCleaningUpFlag = false;
+    
+    CGFloat fltHeight;
+    if ([[_objForm.navigatedViewController navigationItem] prompt] == nil) {
+        fltHeight = 200;
+    } else {
+        fltHeight = 170;
+    }
+    
+    [UIView beginAnimations:@"" context:NULL];
+    [objScrollView setFrame:CGRectMake(_TextFieldFormItem_objCurrentFrame.origin.x, _TextFieldFormItem_objCurrentFrame.origin.y, [UIScreen mainScreen].bounds.size.width, fltHeight)];
+    [UIView commitAnimations];
+    
+    [objScrollView setScrollEnabled:true];
+    [objScrollView setContentSize:CGSizeMake([UIScreen mainScreen].bounds.size.width, 5000)];
+    
+    CGRect objRectToScrollTo = CGRectMake(0, fltYPosition, [UIScreen mainScreen].bounds.size.width, [[_objForm getFormItemAtIndex:[_objForm.selectedIndexPath row]] getHeight] + kTopMargin*2);
+    [objScrollView scrollRectToVisible:objRectToScrollTo
+                              animated:true];
+}
 
-	CGFloat fltYPosition = [_objForm getYPositionForCellAtIndexPath:_objForm.selectedIndexPath];
-	fltYPosition -= kTopMargin;
-
-	// Are we "already scrolling"?  If not, let's store the current ScrollView data
-	if (!_TextFieldFormItem_blnIsScrollingFlag) {
-		_TextFieldFormItem_objCurrentFrame = [objScrollView frame];
-		_TextFieldFormItem_objCurrentContentSize = [objScrollView contentSize];
-		_TextFieldFormItem_objCurrentContentOffset = [objScrollView contentOffset];
-		_TextFieldFormItem_blnCurrentScrollEnableFlag = [objScrollView isScrollEnabled];
-		_TextFieldFormItem_blnIsScrollingFlag = true;
-	}
-	_TextFieldFormItem_blnIsCleaningUpFlag = false;
-
-	CGFloat fltHeight;
-	if ([[_objForm.navigatedViewController navigationItem] prompt] == nil) {
-		fltHeight = 200;
-	} else {
-		fltHeight = 170;
-	}
-	
-	[UIView beginAnimations:@"" context:NULL];
-	[objScrollView setFrame:CGRectMake(_TextFieldFormItem_objCurrentFrame.origin.x, _TextFieldFormItem_objCurrentFrame.origin.y, [UIScreen mainScreen].bounds.size.width, fltHeight)];
-	[UIView commitAnimations];
-	
-	[objScrollView setScrollEnabled:true];
-	[objScrollView setContentSize:CGSizeMake([UIScreen mainScreen].bounds.size.width, 5000)];
-	
-	CGRect objRectToScrollTo = CGRectMake(0, fltYPosition, [UIScreen mainScreen].bounds.size.width, [[_objForm getFormItemAtIndex:[_objForm.selectedIndexPath row]] getHeight] + kTopMargin*2);
-	[objScrollView scrollRectToVisible:objRectToScrollTo
-							  animated:true];
+- (void)keyboardWillHideNotification:(NSNotification *)notification {
 }
 
 #pragma mark -
@@ -256,6 +366,10 @@ static bool _TextFieldFormItem_blnIsCleaningUpFlag;
 	[self setValue:nil];
 	[_lblField release];
 	[_txtField release];
+    
+    // Remove the observers we created in initWithKey:.  The app will crash if we do not do this.
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+    
 	[super dealloc];
 }
 

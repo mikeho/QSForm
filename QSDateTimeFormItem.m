@@ -88,6 +88,10 @@
 		[_objPicker setDate:[NSDate date]];
 	else
 		[_objPicker setDate:_dttValue];
+    
+    // Need to set the background color of the date picker since in iOS7+ the picker has a
+    // transparent background.  Setting this will not break iOS6.
+    _objPicker.backgroundColor = [UIColor whiteColor];
 	
 	[[_objViewController view] addSubview:_objPicker];
 	

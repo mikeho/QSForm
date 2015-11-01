@@ -96,6 +96,7 @@
 	[_strMultipleValueArray release];
 	[_strOtherValue release];
 
+    [_lblField setText:nil];
 	[_lblField release];
 	[_objTableViewController release];
 	[super dealloc];
@@ -436,7 +437,11 @@
 
 	if (_blnAllowOtherFlag && ([indexPath row] == [_strNameArray count])) {
 		_objAlertView = [[UIAlertView alloc] initWithTitle:@"Other..." message:@" " delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"OK", nil];
-		UITextField * txtValue = [[UITextField alloc] initWithFrame:CGRectMake(12.0, 45.0, 260.0, 25.0)];
+        
+        // Adding subviews to the UIAlertView is no longer supported in iOS7+, so just create the
+        // UIAlertView with a text input style.
+        [_objAlertView setAlertViewStyle:UIAlertViewStylePlainTextInput];
+        UITextField * txtValue = [_objAlertView textFieldAtIndex:0];
 		[txtValue setBackgroundColor:[UIColor whiteColor]];
 		[txtValue setAutocorrectionType:_intOtherTextAutocorrectionType];
 		[txtValue setAutocapitalizationType:_intOtherTextAutocapitalizationType];
@@ -449,13 +454,11 @@
 			}
 		}
 		
-        [txtValue addTarget:self 
-					 action:@selector(textFieldDone:) 
+        [txtValue addTarget:self
+					 action:@selector(textFieldDone:)
 		   forControlEvents:UIControlEventEditingDidEndOnExit];
 		
-		[_objAlertView addSubview:txtValue];
 		[_objAlertView show];
-		[txtValue release];
 		return nil;
 	} else {
 		if (_blnMultipleSelectFlag) {
@@ -484,13 +487,7 @@
 }
 
 - (void)alertView:(UIAlertView *)alertView willDismissWithButtonIndex:(NSInteger)buttonIndex {
-	UITextField * txtValue;
-	for (UIView * objSubview in [alertView subviews]) {
-		if ([objSubview isMemberOfClass:[UITextField class]]) {
-			txtValue = (UITextField *) objSubview;
-			[objSubview resignFirstResponder];
-		}
-	}
+	UITextField * txtValue = [alertView textFieldAtIndex:0];
 
 	if (buttonIndex == 0) {
 		// Do Nothing
