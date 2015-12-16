@@ -39,6 +39,19 @@
 	if (self = [super initWithStyle:UITableViewStyleGrouped]) {
 		[[self view] setFrame:CGRectMake(0, intTop, [UIScreen mainScreen].bounds.size.width, 5000)];
 		[[self tableView] setScrollEnabled:false];
+        
+        // For iOS7+, the scrollviews, and by association -- tableviews, now have default content
+        // insets.  We will get rid of these to let the table fit as it did in iOS6.
+        NSString *reqSysVer = @"7";
+        NSString *currSysVer = [[UIDevice currentDevice] systemVersion];
+        if ([currSysVer compare:reqSysVer options:NSNumericSearch] != NSOrderedAscending) {
+            
+            CGFloat navigationHeight = self.navigationController.navigationBar.frame.size.height;
+            
+            // we are iOS7 or higher
+            [self tableView].tableHeaderView = [[UIView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, [self tableView].bounds.size.width, 0.1f)];
+            [self tableView].tableFooterView = [[UIView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, [self tableView].bounds.size.width, navigationHeight + kLabelTopMargin)];
+        }
 
 		_objFormItemArray = [[NSMutableArray alloc] init];
 		_blnMakeAllLabelsShortFlag = false;
