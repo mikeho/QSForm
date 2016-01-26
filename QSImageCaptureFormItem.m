@@ -153,4 +153,51 @@
 	[super dealloc];
 }
 
+#pragma mark -
+#pragma mark Helper Methods
+
+- (UIImage *) compressImage{
+    UIImage * imgCurrent = [self image];
+    
+    if (imgCurrent == nil) {
+        return nil;
+    }
+    
+    float actualHeight = imgCurrent.size.height;
+    float actualWidth = imgCurrent.size.width;
+    float maxHeight = 768.0;
+    float maxWidth = 1024.0;
+    float imgRatio = actualWidth / actualHeight;
+    float maxRatio = maxWidth / maxHeight;
+    float compressionQuality = 1; // 100 percent compression (no compression)
+    
+    if (actualHeight > maxHeight || actualWidth > maxWidth){
+        if (imgRatio < maxRatio) {
+            //adjust width according to maxHeight
+            imgRatio = maxHeight / actualHeight;
+            actualWidth = imgRatio * actualWidth;
+            actualHeight = maxHeight;
+        }
+        else if (imgRatio > maxRatio) {
+            //adjust height according to maxWidth
+            imgRatio = maxWidth / actualWidth;
+            actualHeight = imgRatio * actualHeight;
+            actualWidth = maxWidth;
+        }
+        else {
+            actualHeight = maxHeight;
+            actualWidth = maxWidth;
+        }
+    }
+    
+    CGRect rect = CGRectMake(0.0, 0.0, actualWidth, actualHeight);
+    UIGraphicsBeginImageContext(rect.size);
+    [imgCurrent drawInRect:rect];
+    UIImage *img = UIGraphicsGetImageFromCurrentImageContext();
+    NSData *imageData = UIImageJPEGRepresentation(img, compressionQuality);
+    UIGraphicsEndImageContext();
+    
+    return [UIImage imageWithData:imageData];
+}
+
 @end
