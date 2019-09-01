@@ -41,4 +41,5 @@
 - (CGFloat)refreshImageView;
 - (QSImageCaptureFormItem *)initWithKey:(NSString *)strKey Label:(NSString *)strLabel Image:(UIImage *)objImage;
 - (void)eraseClick:(id)sender;
+- (UIImage *) compressImage;
 @end
