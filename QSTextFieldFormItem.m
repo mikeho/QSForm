@@ -108,6 +108,10 @@ static bool _TextFieldFormItem_blnIsCleaningUpFlag;
 	[txtField endEditing:true];
 }
 
+- (IBAction)textFieldEdit:(id)sender {
+    [self setValue:_txtField.text];
+}
+
 - (IBAction)textFieldStart:(id)sender {
     _activeField = true;
     [_objForm setSelectedIndexPath:_objIndexPath];
@@ -132,11 +136,7 @@ static bool _TextFieldFormItem_blnIsCleaningUpFlag;
     _activeField = false;
 	_blnChangedFlag = true;
 
-	NSString * strTextFieldText = ((UITextField *)sender).text;
-	if (strTextFieldText)
-		[self setValue:[NSString stringWithString:strTextFieldText]];
-	else
-		[self setValue:@""];
+    [_txtField setText:[self value]];
 
 	if ([_objForm selectedIndexPath] &&
 		([_objForm selectedIndexPath].row == _objIndexPath.row)) {
@@ -167,6 +167,9 @@ static bool _TextFieldFormItem_blnIsCleaningUpFlag;
         _txtField = [[UITextField alloc] initWithFrame:[self getControlFrameWithHeight:0]];
         _txtField.tag = _intIndex;
         _txtField.clearsOnBeginEditing = NO;
+        [_txtField addTarget:self
+                      action:@selector(textFieldEdit:)
+            forControlEvents:UIControlEventAllEditingEvents];
 		[_txtField addTarget:self
 					  action:@selector(textFieldStart:)
 			forControlEvents:UIControlEventEditingDidBegin];
